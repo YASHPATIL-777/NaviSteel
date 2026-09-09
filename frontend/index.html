@@ -7,521 +7,1002 @@
   <!-- Google Fonts: Inter & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet">
   <!-- Stylesheet -->
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
-  <!-- Top Sticky Header -->
-  <header class="top-header">
-    <div class="header-container">
-      <div class="brand-section">
-        <div class="logo-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- ==========================================================================
+       PREMIUM AUTHENTICATION ENTRY EXPERIENCE
+       ========================================================================== -->
+  <div id="loginScreen" class="login-screen-wrapper">
+    <div class="login-modal-card">
+      
+      <div class="login-brand-header">
+        <div class="login-emblem">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="5" r="3"></circle>
             <line x1="12" y1="22" x2="12" y2="8"></line>
             <path d="M5 12H2a10 10 0 0 0 20 0h-3"></path>
           </svg>
         </div>
-        <div>
-          <h1 class="brand-title">NAVI-STEEL CONTROL TOWER</h1>
-          <p class="brand-subtitle">Ministry of Steel / SAIL Bulk Logistics Optimization Engine (SIH26006)</p>
+        <div class="login-title-block">
+          <h1>NAVISTEEL</h1>
+          <p>Secure Maritime Operations Access</p>
         </div>
       </div>
-      
-      <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-        <span class="live-badge">
+
+      <p class="login-desc-text">
+        Intelligent bulk freight forecasting, multi-voyage contract planning, and raw material logistics optimization engine for the Ministry of Steel & SAIL.
+      </p>
+
+      <!-- Role Selector -->
+      <div class="role-selector-section">
+        <div class="role-selector-label">SELECT ACCESS ROLE</div>
+        <div class="role-pills-grid">
+          <button type="button" class="role-pill-btn" data-role="Ministry Official" data-email="official.steel@gov.in">Ministry Official</button>
+          <button type="button" class="role-pill-btn active" data-role="SAIL Charterer" data-email="yash.patil@sail.gov.in">SAIL Charterer</button>
+          <button type="button" class="role-pill-btn" data-role="Procurement Manager" data-email="procurement@sail-logistics.in">Procurement Manager</button>
+          <button type="button" class="role-pill-btn" data-role="Port Authority" data-email="ops@eastcoastports.gov.in">Port Authority</button>
+        </div>
+      </div>
+
+      <!-- Login Form -->
+      <form id="loginForm" class="login-form" onsubmit="return false;">
+        <div class="login-form-group">
+          <label for="loginEmail">Official ID / Gov Email</label>
+          <input type="text" id="loginEmail" value="yash.patil@sail.gov.in" required autocomplete="username">
+        </div>
+        
+        <div class="login-form-group">
+          <label for="loginPassword">Security Clearance Key</label>
+          <input type="password" id="loginPassword" value="••••••••••••" required autocomplete="current-password">
+        </div>
+
+        <div class="login-actions-row">
+          <button type="submit" id="signInBtn" class="login-btn-primary">
+            <span>SIGN IN TO CONTROL TOWER</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+
+          <button type="button" id="enterDemoBtn" class="login-btn-demo">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            <span>ENTER DEMO ENVIRONMENT (BYPASS)</span>
+          </button>
+        </div>
+      </form>
+
+      <!-- Live Security & Telemetry Status Grid -->
+      <div class="login-telemetry-status">
+        <div class="login-telemetry-item">
           <span class="pulse-dot"></span>
-          <span>OPEN-METEO LIVE MARINE API SYNC</span>
-        </span>
-        <span class="prototype-tag">PROTOTYPE FORECAST / SIMULATED MARKET DATASET</span>
+          <span>Marine API — <strong>ONLINE</strong></span>
+        </div>
+        <div class="login-telemetry-item">
+          <span style="color: #38BDF8;">●</span>
+          <span>Forecast Engine — <strong>READY</strong></span>
+        </div>
+        <div class="login-telemetry-item">
+          <span style="color: #38BDF8;">●</span>
+          <span>Risk Engine — <strong>READY</strong></span>
+        </div>
+        <div class="login-telemetry-item">
+          <span style="color: #10B981;">●</span>
+          <span>East Coast — <strong>7 MONITORED</strong></span>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="login-footer">
+        <span>SIH 2026 // Problem SIH26006</span>
+        <span>Ministry of Steel • Prototype Environment</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       AUTHENTICATION TRANSITION OVERLAY
+       ========================================================================== -->
+  <div id="authTransitionOverlay" class="auth-transition-overlay">
+    <div class="auth-transition-card">
+      <div class="auth-spinner-box"></div>
+      <div style="font-size: 1.1rem; font-weight: 900; letter-spacing: -0.01em; margin-bottom: 0.25rem;">
+        AUTHENTICATING ACCESS...
+      </div>
+      <div style="font-size: 0.75rem; color: #94A3B8;">
+        Verifying cryptographic token & procurement clearance
+      </div>
+
+      <div class="auth-checkpoints-list">
+        <div class="auth-checkpoint-item" id="chk1">
+          <span class="chk-icon">○</span>
+          <span>Identity verified: <strong id="authUserName">Yash Patil (SAIL Charterer)</strong></span>
+        </div>
+        <div class="auth-checkpoint-item" id="chk2">
+          <span class="chk-icon">○</span>
+          <span>Procurement authorization & token granted</span>
+        </div>
+        <div class="auth-checkpoint-item" id="chk3">
+          <span class="chk-icon">○</span>
+          <span>Econometric forecasting & risk engines online</span>
+        </div>
+        <div class="auth-checkpoint-item" id="chk4">
+          <span class="chk-icon">○</span>
+          <span>Open-Meteo live marine API feed synchronized</span>
+        </div>
+      </div>
+
+      <div id="authStatusText" style="font-size: 0.85rem; font-weight: 800; color: #38BDF8; letter-spacing: 0.04em;">
+        INITIALIZING MISSION CONTROL...
       </div>
     </div>
-  </header>
+  </div>
 
-  <!-- Main Container -->
-  <main class="main-container">
+  <!-- ==========================================================================
+       MAIN APPLICATION SHELL (CONTROL TOWER DASHBOARD)
+       ========================================================================== -->
+  <div class="app-layout" id="appLayout" style="display: none;">
+    
+    <!-- Left Navigation Sidebar -->
+    <aside class="app-sidebar">
+      <div>
+        <div class="sidebar-brand">
+          <div class="brand-icon-box">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="5" r="3"></circle>
+              <line x1="12" y1="22" x2="12" y2="8"></line>
+              <path d="M5 12H2a10 10 0 0 0 20 0h-3"></path>
+            </svg>
+          </div>
+          <div>
+            <div class="brand-text-title">NAVI-STEEL</div>
+            <div class="brand-text-sub">Control Tower</div>
+          </div>
+        </div>
 
-    <!-- Scenario Suite Selection Bar -->
-    <section class="scenario-bar">
-      <div class="scenario-header">
-        <span class="scenario-title">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polygon points="5 3 19 12 5 21 5 3"></polygon>
-          </svg>
-          SIH 2026 Live Demo Scenarios
-        </span>
-        <span style="font-size: 0.72rem; color: var(--text-secondary);">One-click automated parameter injection</span>
-      </div>
-      
-      <div class="scenario-buttons">
-        <button class="scenario-btn active" data-scenario="1">
-          <span class="scenario-name">Scenario 1: Australia ➔ Paradip</span>
-          <span class="scenario-desc">100,000 MT Coking Coal | Panamax Fit</span>
-        </button>
-        
-        <button class="scenario-btn" data-scenario="2">
-          <span class="scenario-name">Scenario 2: Indonesia ➔ Vizag</span>
-          <span class="scenario-desc">50,000 MT Thermal Coal | Supramax Fit</span>
-        </button>
-        
-        <button class="scenario-btn" data-scenario="3">
-          <span class="scenario-name">Scenario 3: Australia ➔ Dhamra</span>
-          <span class="scenario-desc">150,000 MT Mega-Lot | Capesize + Inter-PSU Co-Load</span>
-        </button>
-        
-        <button class="scenario-btn danger-btn" data-scenario="4">
-          <span class="scenario-name">Scenario 4: Unsafe Draft @ Vizag</span>
-          <span class="scenario-desc">17.5m Draft Capesize ➔ 14.5m Port [Safety Rejection]</span>
-        </button>
-      </div>
-    </section>
+        <nav class="sidebar-nav">
+          <div class="nav-section-title">Navigation</div>
+          
+          <a href="#heroSection" class="sidebar-link active">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="3 9 12 2 21 9 21 22 3 22 3 9"></polygon>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            Control Tower
+          </a>
 
-    <!-- Grid: Parameters Form (Left) & Gate 1 Hydrodynamics (Right) -->
-    <section class="grid-2col">
-      <!-- Input Card -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-cyan)" stroke-width="2">
+          <a href="#gatekeeperSection" class="sidebar-link">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            Vessel Validation
+          </a>
+
+          <a href="#forecastingSection" class="sidebar-link">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+              <polyline points="16 7 22 7 22 13"></polyline>
+            </svg>
+            Freight Intelligence
+          </a>
+
+          <a href="#contractPlannerSection" class="sidebar-link">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
               <polyline points="14 2 14 8 20 8"></polyline>
               <line x1="16" y1="13" x2="8" y2="13"></line>
               <line x1="16" y1="17" x2="8" y2="17"></line>
-              <polyline points="10 9 9 9 8 9"></polyline>
             </svg>
-            Procurement & Vessel Parameters
-          </div>
-          <span class="badge badge-info">FASTAPI BACKEND</span>
-        </div>
-        
-        <div class="form-grid">
-          <div class="form-group">
-            <label for="originSelect">Origin Port / Load Terminal</label>
-            <select id="originSelect">
-              <option value="Australia (Gladstone / Hay Point)">Australia (Gladstone / Hay Point)</option>
-              <option value="Australia (Hay Point)">Australia (Hay Point)</option>
-              <option value="Australia (Gladstone)">Australia (Gladstone)</option>
-              <option value="Indonesia (Taboneo / Samarinda)">Indonesia (Taboneo / Samarinda)</option>
-              <option value="South Africa (Richards Bay)">South Africa (Richards Bay)</option>
-              <option value="USA (Hampton Roads / Baltimore)">USA (Hampton Roads / Baltimore)</option>
-              <option value="Mozambique (Maputo)">Mozambique (Maputo)</option>
-              <option value="Canada (Roberts Bank)">Canada (Roberts Bank)</option>
-            </select>
-          </div>
-          
-          <div class="form-group">
-            <label for="destSelect">Discharge Port (East Coast India)</label>
-            <select id="destSelect">
-              <option value="Paradip">Paradip Port (PPT) — 16.0m Draft</option>
-              <option value="Dhamra">Dhamra Port (DPCL) — 18.0m Draft</option>
-              <option value="Visakhapatnam">Visakhapatnam Port (VPA) — 14.5m Draft</option>
-              <option value="Gangavaram">Gangavaram Port (GPL) — 18.5m Draft</option>
-              <option value="Gopalpur">Gopalpur Port — 12.5m Draft</option>
-              <option value="Haldia">Haldia Dock Complex — 8.5m Draft</option>
-              <option value="Sagar">Sagar Anchorage — 10.5m Draft</option>
-            </select>
-          </div>
-          
-          <div class="form-group">
-            <label for="cargoTypeSelect">Bulk Cargo Material</label>
-            <select id="cargoTypeSelect">
-              <option value="Coking Coal">Premium Hard Coking Coal ($220/MT)</option>
-              <option value="Thermal Coal">Non-Coking Thermal Coal ($110/MT)</option>
-              <option value="PCI Coal">Pulverized Coal Injection ($180/MT)</option>
-              <option value="Iron Ore">High Grade Iron Ore Pellets ($105/MT)</option>
-              <option value="Limestone">SMS Grade Limestone ($45/MT)</option>
-            </select>
-          </div>
-          
-          <div class="form-group">
-            <label for="vesselTypeSelect">Vessel Charter Class</label>
-            <select id="vesselTypeSelect">
-              <option value="Handysize">Handysize (25k-39k DWT)</option>
-              <option value="Supramax">Supramax / Ultramax (50k-65k DWT)</option>
-              <option value="Panamax" selected>Panamax / Kamsarmax (70k-85k DWT)</option>
-              <option value="Capesize">Capesize / Newcastlemax (150k-210k DWT)</option>
-            </select>
-          </div>
-          
-          <div class="form-group full-width">
-            <label>Cargo Quantity (Metric Tonnes)</label>
-            <div class="slider-container">
-              <input type="range" id="cargoQuantitySlider" min="20000" max="200000" step="5000" value="100000">
-              <input type="number" id="cargoQuantityInput" min="20000" max="200000" step="5000" value="100000" style="width: 95px;">
-              <span class="slider-val" id="cargoQuantityVal">100k MT</span>
-            </div>
-          </div>
-          
-          <div class="form-group">
-            <label>Laden Vessel Draft (Meters)</label>
-            <div class="slider-container">
-              <input type="range" id="vesselDraftSlider" min="8.0" max="20.0" step="0.1" value="14.8">
-              <input type="number" id="vesselDraftInput" min="8.0" max="20.0" step="0.1" value="14.8" style="width: 70px;">
-              <span class="slider-val" id="vesselDraftVal">14.8m</span>
-            </div>
-          </div>
-          
-          <div class="form-group">
-            <label for="vesselLoaInput">Length Overall (LOA in Meters)</label>
-            <input type="number" id="vesselLoaInput" min="150" max="350" step="1" value="229">
-          </div>
-        </div>
-      </div>
+            Contract Strategy
+          </a>
 
-      <!-- Gate 1 Hydrodynamics Card -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-emerald)" stroke-width="2">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-            </svg>
-            Gate 1: Physical & MetOcean Safety Gate
-          </div>
-          <span class="badge badge-success">ABSOLUTE GATEKEEPER 1</span>
-        </div>
-        
-        <div id="gate1Banner" class="gate1-banner approved">
-          <!-- Populated by safetyGate.js -->
-        </div>
-        
-        <div class="telemetry-grid">
-          <div class="telemetry-item">
-            <div class="telemetry-label">Draft Margin</div>
-            <div class="telemetry-val" id="draftMarginVal">+1.2m</div>
-            <div class="telemetry-sub safe" id="draftMarginSub">Max: 16.0m (Safe)</div>
-          </div>
-          
-          <div class="telemetry-item">
-            <div class="telemetry-label">LOA Clearance</div>
-            <div class="telemetry-val" id="loaMarginVal">+51.0m</div>
-            <div class="telemetry-sub safe" id="loaMarginSub">Max LOA: 280m</div>
-          </div>
-          
-          <div class="telemetry-item">
-            <div class="telemetry-label">Wave Height</div>
-            <div class="telemetry-val" id="waveVal">1.4m</div>
-            <div class="telemetry-sub safe" id="waveSub">Safe Swell (&lt; 2.5m)</div>
-          </div>
-          
-          <div class="telemetry-item">
-            <div class="telemetry-label">Wind Speed</div>
-            <div class="telemetry-val" id="windVal">24.8 km/h</div>
-            <div class="telemetry-sub safe" id="windSub">Safe Gusts (&lt; 40km/h)</div>
-          </div>
-        </div>
-        
-        <div style="background: rgba(15, 23, 42, 0.6); border-radius: 8px; padding: 0.75rem; font-size: 0.75rem; color: var(--text-secondary); line-height: 1.4;">
-          <strong style="color: var(--accent-cyan);">Hydrodynamic Protocol:</strong> Indian East Coast major port entrance channels require positive Under-Keel Clearance (UKC) and MetOcean wave limits prior to issuing pilotage clearance.
-        </div>
-      </div>
-    </section>
-
-    <!-- Freight Forecasting Engine & Curve Chart Card -->
-    <section class="card" style="margin-bottom: 1.5rem;">
-      <div class="card-header">
-        <div class="card-title">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-blue)" stroke-width="2">
-            <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
-            <polyline points="16 7 22 7 22 13"></polyline>
-          </svg>
-          Intelligent Forward Freight Curve Engine
-        </div>
-        <div style="display: flex; gap: 8px; align-items: center;">
-          <span class="badge" id="forecastTrendBadge">RISING</span>
-          <span class="badge badge-info">92% CONFIDENCE CORRIDOR</span>
-        </div>
-      </div>
-      
-      <div class="telemetry-grid" style="grid-template-columns: repeat(6, 1fr); margin-bottom: 0.75rem;">
-        <div class="telemetry-item">
-          <div class="telemetry-label">Current Spot</div>
-          <div class="telemetry-val" id="currentRateVal" style="color: #FBBF24;">$14.20</div>
-        </div>
-        <div class="telemetry-item">
-          <div class="telemetry-label">30-Day Forward</div>
-          <div class="telemetry-val" id="forecast30dVal">$15.10</div>
-        </div>
-        <div class="telemetry-item">
-          <div class="telemetry-label">90-Day Forward (Peak)</div>
-          <div class="telemetry-val" id="forecast90dVal" style="color: #F87171;">$16.80</div>
-        </div>
-        <div class="telemetry-item">
-          <div class="telemetry-label">180-Day Forward</div>
-          <div class="telemetry-val" id="forecast180dVal">$15.40</div>
-        </div>
-        <div class="telemetry-item">
-          <div class="telemetry-label">12-Month Curve</div>
-          <div class="telemetry-val" id="forecast12mVal">$14.90</div>
-        </div>
-        <div class="telemetry-item" style="background: rgba(6, 182, 212, 0.1); border-color: var(--accent-cyan);">
-          <div class="telemetry-label" style="color: var(--accent-cyan);">Avoided Cost</div>
-          <div class="telemetry-val" id="avoidedPremiumVal" style="color: #38BDF8;">$260,000</div>
-        </div>
-      </div>
-      
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; font-size: 0.8rem;">
-        <span>Optimal Entry Window: <strong style="color: #34D399;" id="optimalWindowVal">15 Sep - 30 Sep 2026</strong></span>
-        <span style="font-size: 0.72rem; color: var(--text-muted);">Confidence bounds: ±8% Econometric band</span>
-      </div>
-      
-      <div id="forecastChartContainer" class="chart-container">
-        <!-- Rendered by freightForecast.js -->
-      </div>
-    </section>
-
-    <!-- Vessel Ranking Engine Card -->
-    <section class="card" style="margin-bottom: 1.5rem;">
-      <div class="card-header">
-        <div class="card-title">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-cyan)" stroke-width="2">
-            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
-          </svg>
-          Multi-Vessel Economic & Hydrodynamic Optimization
-        </div>
-        <span class="badge badge-info">PIANC SIZING STANDARDS</span>
-      </div>
-      
-      <div style="overflow-x: auto;">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Rank</th>
-              <th>Vessel Class</th>
-              <th>Capacity</th>
-              <th>Draft / LOA</th>
-              <th>Utilization</th>
-              <th>Voyages</th>
-              <th>Unit Rate</th>
-              <th>Total Spend</th>
-              <th>Port Compatibility</th>
-            </tr>
-          </thead>
-          <tbody id="vesselRankingTableBody">
-            <!-- Rendered by vesselOptimizer.js -->
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- FEATURE 1: Multiple-Voyage Contract Strategy Planner Card -->
-    <section class="card" style="margin-bottom: 1.5rem;">
-      <div class="card-header">
-        <div class="card-title">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-emerald)" stroke-width="2">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-            <polyline points="14 2 14 8 20 8"></polyline>
-            <line x1="16" y1="13" x2="8" y2="13"></line>
-            <line x1="16" y1="17" x2="8" y2="17"></line>
-          </svg>
-          Multiple-Voyage Contract Strategy Planner
-        </div>
-        <div style="display: flex; gap: 8px; align-items: center;">
-          <span class="badge badge-success" id="contractRecBadge">SHORT-TERM MULTIPLE VOYAGE</span>
-          <span class="badge badge-info" id="contractSavingsVal">+$1.36M / Year</span>
-        </div>
-      </div>
-      
-      <div id="contractPlannerContainer" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1rem;">
-        <!-- Populated by contractPlanner.js -->
-      </div>
-      
-      <div style="background: rgba(15, 23, 42, 0.6); border-radius: 8px; padding: 0.85rem; border-left: 3px solid var(--accent-emerald);">
-        <div style="font-size: 0.75rem; font-weight: 700; color: #34D399; text-transform: uppercase; margin-bottom: 4px;">
-          STRATEGIC CONTRACTING DIRECTIVE:
-        </div>
-        <ul id="contractRationaleList" style="padding-left: 1.2rem; font-size: 0.82rem; color: #F8FAFC; display: flex; flex-direction: column; gap: 3px;">
-          <!-- Populated by contractPlanner.js -->
-        </ul>
-      </div>
-    </section>
-
-    <!-- FEATURE 2 & 3: Disruption Alerts & Idle Management Grid -->
-    <section class="grid-2col" style="margin-bottom: 1.5rem;">
-      <!-- Early Warning / Disruption Alert Center -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-amber)" stroke-width="2">
+          <a href="#alertsSection" class="sidebar-link">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
               <line x1="12" y1="9" x2="12" y2="13"></line>
               <line x1="12" y1="17" x2="12.01" y2="17"></line>
             </svg>
-            Early Warning & Disruption Alert Center
-          </div>
-          <div style="display: flex; gap: 6px; align-items: center;">
-            <span class="badge badge-warning" id="alertRiskLevelBadge">HIGH RISK</span>
-            <span style="font-family: var(--font-mono); font-weight: 800; color: #FBBF24;" id="alertCompositeScoreVal">74/100</span>
-          </div>
-        </div>
-        
-        <div id="disruptionAlertsList" style="display: flex; flex-direction: column; gap: 0.65rem;">
-          <!-- Populated by alerts.js -->
-        </div>
-      </div>
+            Risk & Alerts
+          </a>
 
-      <!-- Idle Time & Alternative Employment Engine -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-cyan)" stroke-width="2">
+          <a href="#idleSection" class="sidebar-link">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="12" cy="12" r="10"></circle>
               <polyline points="12 6 12 12 16 14"></polyline>
             </svg>
-            Idle Time & Alternative Employment Engine
-          </div>
-          <span class="badge badge-success" id="idleRecBadge">ACCEPT CO-LOAD & REPOSITION</span>
-        </div>
-        
-        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 0.85rem;">
-          <div>
-            <div style="font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase;">Unmitigated Idle Burn (Standby)</div>
-            <div style="font-family: var(--font-mono); font-size: 1.3rem; font-weight: 800; color: #F87171;" id="idleBaselineLossVal">-$100,800</div>
-          </div>
-          <div style="text-align: right;">
-            <div style="font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase;">Expected Inactive Days</div>
-            <div style="font-family: var(--font-mono); font-size: 1.1rem; font-weight: 700; color: #F8FAFC;" id="idleBaselineDaysVal">4.8 Days / Voyage</div>
-          </div>
-        </div>
-        
-        <div id="idleAlternativesContainer" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem;">
-          <!-- Populated by idleManagement.js -->
-        </div>
-      </div>
-    </section>
+            Idle Management
+          </a>
 
-    <!-- Strategic Modules A, B, C Grid -->
-    <section class="grid-3col">
-      <!-- Module A -->
-      <div class="module-card">
-        <div>
-          <div class="module-tag">Module A // Financials</div>
-          <div style="font-size: 0.95rem; font-weight: 700; color: #F8FAFC; margin-top: 4px;">Dynamic Stockpiling Engine</div>
-          <div class="metric-highlight">
-            <div class="metric-big" id="moduleANetBenefit">+$1.08M</div>
-            <div class="metric-unit">Net Value</div>
-          </div>
-          <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 0.75rem;">
-            <span class="badge badge-success" id="moduleARecBadge">OPTIMAL</span>
-            <span style="font-size: 0.72rem; color: var(--text-secondary);">Ahead of rate spike</span>
-          </div>
-          <p style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.4;">
-            Quantifies pre-monsoon bulk stockpiling by balancing avoided price spikes & demurrage against holding & capital charges.
-          </p>
-        </div>
-        <button class="action-btn" id="openStockpileModalBtn" style="margin-top: 1rem;">
-          OPEN FINANCIAL DEEP-DIVE
+          <a href="#modulesSection" class="sidebar-link">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+              <line x1="8" y1="21" x2="16" y2="21"></line>
+              <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+            Strategic Pillars
+          </a>
+
+          <a href="#executiveDirectiveSection" class="sidebar-link">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            Executive Directive
+          </a>
+        </nav>
+      </div>
+
+      <div class="sidebar-footer">
+        <button class="sidebar-ai-trigger" id="sidebarAiBtn">
+          <span>NAVI AI ADVISOR</span>
+          <span style="background: rgba(255,255,255,0.25); padding: 2px 6px; border-radius: 4px; font-size: 0.65rem;">3 INSIGHTS</span>
         </button>
+        <div style="font-size: 0.65rem; color: var(--text-muted); text-align: center;">
+          Ministry of Steel // SIH26006
+        </div>
       </div>
+    </aside>
 
-      <!-- Module B -->
-      <div class="module-card">
-        <div>
-          <div class="module-tag">Module B // Seasonality</div>
-          <div style="font-size: 0.95rem; font-weight: 700; color: #F8FAFC; margin-top: 4px;">12-Month Risk Heatmap</div>
-          <div class="metric-highlight">
-            <div class="metric-big" id="moduleBRiskSummary" style="font-size: 1.35rem; color: #F87171;">July (Peak Swell)</div>
-          </div>
-          <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 0.75rem;">
-            <span class="badge badge-danger">MONSOON SWELL</span>
-            <span style="font-size: 0.72rem; color: var(--text-secondary);">June - September</span>
-          </div>
-          <p style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.4;">
-            Multi-factor risk tracking across East Coast ports factoring cyclone depressions, swell surges, and railway rake availability.
-          </p>
-        </div>
-        <button class="action-btn" id="openRiskModalBtn" style="margin-top: 1rem;">
-          OPEN 12-MONTH MATRIX
-        </button>
-      </div>
-
-      <!-- Module C -->
-      <div class="module-card">
-        <div>
-          <div class="module-tag">Module C // PSU Sharing</div>
-          <div style="font-size: 0.95rem; font-weight: 700; color: #F8FAFC; margin-top: 4px;">Inter-PSU Co-Loading Radar</div>
-          <div class="metric-highlight">
-            <div class="metric-big" id="moduleCSavings" style="color: #34D399;">+$280k</div>
-            <div class="metric-unit">Synergy Savings</div>
-          </div>
-          <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 0.75rem;">
-            <span class="badge badge-success" id="moduleCPartnerBadge">SAIL MATCH (98%)</span>
-            <span style="font-size: 0.72rem; color: var(--text-secondary);" id="moduleCCo2Badge">-510 MT CO₂</span>
-          </div>
-          <p style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.4;">
-            Identifies shared bulk chartering opportunities across SAIL, RINL, NMDC, and Coal India to achieve mega-vessel economies.
-          </p>
-        </div>
-        <button class="action-btn" id="openColoadModalBtn" style="margin-top: 1rem;">
-          OPEN CO-LOADING ENGINE
-        </button>
-      </div>
-    </section>
-
-    <!-- Master Executive Decision Directive Card -->
-    <section class="executive-card">
-      <div class="exec-header">
-        <div>
-          <div style="font-size: 0.75rem; color: var(--accent-cyan); font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;">
-            MASTER PROCUREMENT DIRECTIVE // EXECUTIVE CLEARANCE
-          </div>
-          <div style="font-size: 1.15rem; font-weight: 800; color: #F8FAFC; margin-top: 2px;">
-            AI-Synthesized Chartering Directive
-          </div>
-        </div>
-        <div id="execStatusBadge" class="exec-status-badge go">
-          FINAL RECOMMENDATION: GO // GREEN CLEARANCE
-        </div>
-      </div>
+    <!-- Main Content Area -->
+    <div class="app-main">
       
-      <div class="exec-grid" style="grid-template-columns: repeat(4, 1fr);">
-        <div class="exec-item">
-          <div class="exec-item-label">Recommended Vessel</div>
-          <div class="exec-item-value" id="execVesselVal" style="color: #38BDF8;">PANAMAX / KAMSARMAX</div>
+      <!-- Top Sticky Navigation Header -->
+      <header class="top-header">
+        <div class="header-search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="globalSearchInput" placeholder="Search ports, vessels, routes, contracts...">
+          <span class="kbd-shortcut">Ctrl K</span>
         </div>
-        
-        <div class="exec-item">
-          <div class="exec-item-label">Route Corridor</div>
-          <div class="exec-item-value" id="execRouteVal">Australia ➔ Paradip</div>
-        </div>
-        
-        <div class="exec-item">
-          <div class="exec-item-label">Recommended Contract</div>
-          <div class="exec-item-value" id="execContractVal" style="color: #34D399; font-size: 0.95rem;">SHORT-TERM MULTIPLE VOYAGE</div>
-        </div>
-        
-        <div class="exec-item">
-          <div class="exec-item-label">Annual Spend Savings</div>
-          <div class="exec-item-value" id="execAnnualSavingsVal" style="color: #FBBF24;">+$1,360,000/Year vs Spot</div>
-        </div>
-        
-        <div class="exec-item">
-          <div class="exec-item-label">Vessel Idle Risk</div>
-          <div class="exec-item-value" id="execIdleRiskVal" style="color: #34D399; font-size: 0.95rem;">LOW // CO-LOAD OPTIMIZED</div>
-        </div>
-        
-        <div class="exec-item" style="grid-column: span 3;">
-          <div class="exec-item-label">Active Disruption Alert</div>
-          <div class="exec-item-value" id="execActiveAlertVal" style="color: #FBBF24; font-size: 0.95rem;">POST-MONSOON BERTH CONGESTION ADVISORY</div>
-        </div>
-      </div>
-      
-      <div id="execReasonsContainer" class="exec-reasons">
-        <div class="exec-reasons-title">AUDITABLE AI RATIONALE & CLEARANCE PROOF:</div>
-        <ul id="execReasonsList" class="exec-reasons-list">
-          <!-- Rendered by executiveDecision.js -->
-        </ul>
-      </div>
-      
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; font-size: 0.72rem; color: var(--text-muted);">
-        <span>Security Verification: <strong style="color: var(--text-secondary);" id="execSignatureVal">NAVI-STEEL-GO-VERIFIED-SAIL-PROCUREMENT</strong></span>
-        <span>SIH 2026 Problem Statement SIH26006 Compliance Engine</span>
-      </div>
-    </section>
 
-  </main>
+        <div class="header-actions">
+          <span class="live-badge">
+            <span class="pulse-dot"></span>
+            <span>OPEN-METEO LIVE MARINE API SYNC</span>
+          </span>
+          <span class="prototype-tag">PROTOTYPE FORECAST / SIMULATED MARKET DATASET</span>
+          <span class="sih-badge" id="environmentBadge">DEMO ENVIRONMENT</span>
+          
+          <!-- User Profile with Dropdown Menu -->
+          <div class="user-profile-wrapper" id="userProfileWrapper">
+            <div class="user-profile">
+              <div class="user-avatar" id="topUserAvatar">YP</div>
+              <div style="display: flex; flex-direction: column;">
+                <span style="font-size: 0.78rem; font-weight: 800; color: var(--text-navy-900);" id="topUserName">Yash Patil</span>
+                <span style="font-size: 0.65rem; color: #059669; font-weight: 700;" id="topUserRole">● AUTHENTICATED</span>
+              </div>
+            </div>
+
+            <!-- Profile Dropdown -->
+            <div class="user-profile-dropdown" id="userDropdown">
+              <div class="user-dropdown-item" style="cursor: default;">
+                <span style="font-size: 0.72rem; color: var(--text-muted);">Role</span>
+                <span style="font-weight: 700; color: var(--text-navy-900);" id="dropdownRoleLabel">SAIL Charterer</span>
+              </div>
+              <div class="user-dropdown-item" style="cursor: default;">
+                <span style="font-size: 0.72rem; color: var(--text-muted);">Clearance</span>
+                <span style="font-weight: 700; color: #059669;">Tier 1 Official</span>
+              </div>
+              <div class="user-dropdown-divider"></div>
+              <div class="user-dropdown-item logout-item" id="logoutBtn">
+                <span>Sign Out & Lock</span>
+                <span>⎋</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </header>
+
+      <!-- Cinematic Maritime Hero Section -->
+      <section class="hero-section" id="heroSection">
+        <div class="hero-bg-overlay"></div>
+        <div class="hero-content-grid">
+          
+          <div class="hero-text-block">
+            <div class="hero-pill-badge">
+              <span>●</span>
+              <span>Maritime Logistics Mission Control</span>
+            </div>
+            
+            <h1 class="hero-title">
+              Global Steel. <br><span>Smarter Decisions.</span>
+            </h1>
+            
+            <p class="hero-subtitle">
+              AI-powered forward freight forecasting, multi-voyage contract planning, vessel positioning, and bulk procurement optimization for India's East Coast ports.
+            </p>
+            
+            <div class="hero-actions">
+              <a href="#gatekeeperSection" class="hero-btn-primary" style="text-decoration: none;">
+                START NEW ANALYSIS
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+              <button class="hero-btn-secondary" id="heroWatchDemoBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+                LOAD SCENARIO 1 ▶
+              </button>
+            </div>
+          </div>
+
+          <!-- Interactive Maritime Route Map & Live Synchronized Vessel Overlay -->
+          <div class="hero-map-wrapper">
+            <div class="hero-map-header">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="pulse-dot"></span>
+                <span style="font-size: 0.75rem; font-weight: 800; color: #FFFFFF; letter-spacing: 0.04em;">EAST COAST MARITIME CORRIDOR RADAR</span>
+              </div>
+              <span class="live-badge" style="padding: 2px 8px; font-size: 0.65rem;">LIVE ROUTE TRACK</span>
+            </div>
+
+            <!-- SVG Animated East Coast India to Australia Corridor Map -->
+            <div class="hero-svg-map-container">
+              <svg width="100%" height="100%" viewBox="0 0 540 190" style="overflow: visible;">
+                <defs>
+                  <linearGradient id="routeGlow" x1="1" y1="1" x2="0" y2="0">
+                    <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.9"/>
+                    <stop offset="100%" stop-color="#0284C7" stop-opacity="0.3"/>
+                  </linearGradient>
+                </defs>
+
+                <!-- India East Coast Outline Representation -->
+                <path d="M 60,10 Q 80,45 85,80 Q 95,120 110,150 Q 130,175 145,185" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="2.5"/>
+                <text x="50" y="25" fill="#64748B" font-size="8" font-family="sans-serif" font-weight="700">INDIA EAST COAST</text>
+
+                <!-- Major Port Nodes on East Coast -->
+                <!-- Haldia -->
+                <circle cx="82" cy="35" r="3.5" fill="#38BDF8"/>
+                <circle cx="82" cy="35" r="7" fill="none" stroke="#38BDF8" class="pulse-node-ring"/>
+                <text x="44" y="38" fill="#E2E8F0" font-size="8.5" font-family="sans-serif" font-weight="700">Haldia</text>
+
+                <!-- Dhamra -->
+                <circle cx="85" cy="65" r="4" fill="#10B981"/>
+                <circle cx="85" cy="65" r="8" fill="none" stroke="#10B981" class="pulse-node-ring"/>
+                <text x="38" y="68" fill="#A7F3D0" font-size="8.5" font-family="sans-serif" font-weight="800">Dhamra (18m)</text>
+
+                <!-- Paradip (Active Destination) -->
+                <circle cx="88" cy="95" r="5" fill="#38BDF8"/>
+                <circle cx="88" cy="95" r="10" fill="none" stroke="#38BDF8" class="pulse-node-ring"/>
+                <text x="35" y="98" fill="#FFFFFF" font-size="9" font-family="sans-serif" font-weight="900">★ Paradip</text>
+
+                <!-- Visakhapatnam (Vizag) -->
+                <circle cx="102" cy="130" r="3.5" fill="#F59E0B"/>
+                <text x="58" y="133" fill="#E2E8F0" font-size="8.5" font-family="sans-serif" font-weight="700">Vizag (14.5m)</text>
+
+                <!-- Gangavaram -->
+                <circle cx="110" cy="150" r="3.5" fill="#38BDF8"/>
+                <text x="48" y="153" fill="#E2E8F0" font-size="8.5" font-family="sans-serif" font-weight="700">Gangavaram</text>
+
+                <!-- Origin: Australia (Gladstone / Hay Point) -->
+                <path d="M 440,140 Q 480,135 510,165" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="2.5"/>
+                <circle cx="460" cy="145" r="4.5" fill="#F59E0B"/>
+                <circle cx="460" cy="145" r="9" fill="none" stroke="#F59E0B" class="pulse-node-ring"/>
+                <text x="400" y="135" fill="#FDE68A" font-size="8.5" font-family="sans-serif" font-weight="800">Hay Point / Gladstone</text>
+                <text x="440" y="165" fill="#94A3B8" font-size="8" font-family="sans-serif">AUSTRALIA</text>
+
+                <!-- Animated Shipping Route Curve -->
+                <path id="oceanVoyageRoute" d="M 460,145 Q 310,165 210,125 Q 140,105 88,95" fill="none" stroke="url(#routeGlow)" stroke-width="2.5" class="animated-route-line"/>
+
+                <!-- Moving Vessel Marker along Voyage Route (Simulated) -->
+                <g id="simulatedAisMarker">
+                  <circle r="4" fill="#38BDF8">
+                    <animateMotion dur="14s" repeatCount="indefinite" rotate="auto">
+                      <mpath href="#oceanVoyageRoute"/>
+                    </animateMotion>
+                  </circle>
+                  <circle r="8" fill="none" stroke="#38BDF8" stroke-width="1.5" opacity="0.6">
+                    <animateMotion dur="14s" repeatCount="indefinite" rotate="auto">
+                      <mpath href="#oceanVoyageRoute"/>
+                    </animateMotion>
+                  </circle>
+                </g>
+
+                <!-- Static Live Vessel Marker (Live AIS Coordinates) -->
+                <g id="liveAisMarker" style="display: none;">
+                  <circle id="liveAisPin" cx="210" cy="125" r="5" fill="#10B981"/>
+                  <circle id="liveAisPulse" cx="210" cy="125" r="10" fill="none" stroke="#10B981" class="pulse-node-ring"/>
+                  <text id="liveAisLabel" x="220" y="128" fill="#6EE7B7" font-size="8" font-family="sans-serif" font-weight="700">LIVE AIS FIX</text>
+                </g>
+              </svg>
+            </div>
+
+            <!-- Synchronized Vessel & Live MetOcean Panels -->
+            <div class="floating-hero-cards-row">
+              <div class="hero-vessel-panel">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px;">
+                  <span id="heroVesselName" style="font-weight: 800; font-size: 0.82rem; color: #FFFFFF;">MV Ocean Pioneer</span>
+                  <div style="display: flex; gap: 4px; align-items: center;">
+                    <span id="heroAisBadge" class="badge" style="font-size: 0.58rem; padding: 1px 5px; background: rgba(56, 189, 248, 0.15); color: #38BDF8; border: 1px solid rgba(56, 189, 248, 0.3);">DEMO AIS</span>
+                    <span id="heroVesselStatus" class="badge badge-success" style="font-size: 0.62rem; padding: 2px 6px;">IN TRANSIT</span>
+                  </div>
+                </div>
+                <div id="heroVesselSub" style="font-size: 0.7rem; color: #CBD5E1;">Panamax (75,000 MT Coking Coal)</div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.7rem; margin-top: 4px; color: #38BDF8; font-weight: 700;">
+                  <span id="heroVesselRoute">Australia ➔ Paradip</span>
+                  <span id="heroVesselEta" style="color: #34D399;">ETA 4 DAYS</span>
+                </div>
+              </div>
+
+
+              <div class="hero-marine-panel">
+                <div style="font-size: 0.65rem; color: #94A3B8; text-transform: uppercase; font-weight: 700;">Marine Sync (Open-Meteo)</div>
+                <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 2px;">
+                  <span style="font-family: var(--font-mono); font-size: 1.1rem; font-weight: 800; color: #FFFFFF;">1.4m</span>
+                  <span style="font-size: 0.68rem; color: #34D399; font-weight: 700;">Safe Swell</span>
+                </div>
+                <div style="font-size: 0.65rem; color: #94A3B8;">Wind: <strong style="color: #FFFFFF;">24.8 km/h</strong></div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- KPI Strip Immediately Below Hero -->
+      <section class="kpi-strip">
+        <div class="kpi-grid">
+          
+          <div class="kpi-card">
+            <div class="kpi-title">Active Vessel Analyses</div>
+            <div class="kpi-value-row">
+              <span class="kpi-value" id="kpiActiveAnalyses">12</span>
+              <span class="kpi-trend up">↑ 20%</span>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-title">Projected Imports</div>
+            <div class="kpi-value-row">
+              <span class="kpi-value" id="kpiProjectedImports">3.2M</span>
+              <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700;">MT</span>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-title">Optimized Contract Rate</div>
+            <div class="kpi-value-row">
+              <span class="kpi-value" id="kpiOptimizedFreight">$34.70</span>
+              <span class="kpi-trend down">COA</span>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-title">Annual Charter Savings</div>
+            <div class="kpi-value-row">
+              <span class="kpi-value" id="kpiAnnualSavings" style="color: #059669;">+$1.36M</span>
+              <span class="kpi-trend up">vs Spot</span>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-title">CO₂ Mitigation</div>
+            <div class="kpi-value-row">
+              <span class="kpi-value" id="kpiCo2Mitigation" style="color: #059669;">510</span>
+              <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700;">MT CO₂</span>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-title">Corridor Risk Status</div>
+            <div class="kpi-value-row">
+              <span class="kpi-value" id="kpiRiskStatus" style="color: #D97706; font-size: 1.25rem;">74 / 100</span>
+              <span class="kpi-trend neutral">Watch</span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Main Dashboard Container -->
+      <main class="main-container">
+
+        <!-- Scenario Suite Selection Bar -->
+        <section class="scenario-bar">
+          <div class="scenario-header">
+            <span class="scenario-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+              SIH 2026 Live Demo Scenarios
+            </span>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">One-click automated parameter injection & validation</span>
+          </div>
+          
+          <div class="scenario-buttons">
+            <button class="scenario-btn active" data-scenario="1">
+              <span class="scenario-name">Scenario 1: Australia ➔ Paradip</span>
+              <span class="scenario-desc">100,000 MT Coking Coal | Panamax Fit</span>
+            </button>
+            
+            <button class="scenario-btn" data-scenario="2">
+              <span class="scenario-name">Scenario 2: Indonesia ➔ Vizag</span>
+              <span class="scenario-desc">50,000 MT Thermal Coal | Supramax Fit</span>
+            </button>
+            
+            <button class="scenario-btn" data-scenario="3">
+              <span class="scenario-name">Scenario 3: Australia ➔ Dhamra</span>
+              <span class="scenario-desc">150,000 MT Mega-Lot | Capesize + Inter-PSU Co-Load</span>
+            </button>
+            
+            <button class="scenario-btn danger-btn" data-scenario="4">
+              <span class="scenario-name">Scenario 4: Unsafe Draft @ Vizag</span>
+              <span class="scenario-desc">17.5m Draft Capesize ➔ 14.5m Port [Safety Rejection]</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- Grid: Parameters Form (Left) & Gate 1 Hydrodynamics (Right) -->
+        <section class="grid-2col" id="gatekeeperSection">
+          <!-- Input Card -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                  <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+                Procurement & Vessel Parameters
+              </div>
+              <span class="badge badge-info">FASTAPI BACKEND</span>
+            </div>
+            
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="originSelect">Origin Port / Load Terminal</label>
+                <select id="originSelect">
+                  <option value="Australia (Gladstone / Hay Point)">Australia (Gladstone / Hay Point)</option>
+                  <option value="Australia (Hay Point)">Australia (Hay Point)</option>
+                  <option value="Australia (Gladstone)">Australia (Gladstone)</option>
+                  <option value="Indonesia (Taboneo / Samarinda)">Indonesia (Taboneo / Samarinda)</option>
+                  <option value="South Africa (Richards Bay)">South Africa (Richards Bay)</option>
+                  <option value="USA (Hampton Roads / Baltimore)">USA (Hampton Roads / Baltimore)</option>
+                  <option value="Mozambique (Maputo)">Mozambique (Maputo)</option>
+                  <option value="Canada (Roberts Bank)">Canada (Roberts Bank)</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label for="destSelect">Discharge Port (East Coast India)</label>
+                <select id="destSelect">
+                  <option value="Paradip">Paradip Port (PPT) — 16.0m Draft</option>
+                  <option value="Dhamra">Dhamra Port (DPCL) — 18.0m Draft</option>
+                  <option value="Visakhapatnam">Visakhapatnam Port (VPA) — 14.5m Draft</option>
+                  <option value="Gangavaram">Gangavaram Port (GPL) — 18.5m Draft</option>
+                  <option value="Gopalpur">Gopalpur Port — 12.5m Draft</option>
+                  <option value="Haldia">Haldia Dock Complex — 8.5m Draft</option>
+                  <option value="Sagar">Sagar Anchorage — 10.5m Draft</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label for="cargoTypeSelect">Bulk Cargo Material</label>
+                <select id="cargoTypeSelect">
+                  <option value="Coking Coal">Premium Hard Coking Coal ($220/MT)</option>
+                  <option value="Thermal Coal">Non-Coking Thermal Coal ($110/MT)</option>
+                  <option value="PCI Coal">Pulverized Coal Injection ($180/MT)</option>
+                  <option value="Iron Ore">High Grade Iron Ore Pellets ($105/MT)</option>
+                  <option value="Limestone">SMS Grade Limestone ($45/MT)</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label for="vesselTypeSelect">Vessel Charter Class</label>
+                <select id="vesselTypeSelect">
+                  <option value="Handysize">Handysize (25k-39k DWT)</option>
+                  <option value="Supramax">Supramax / Ultramax (50k-65k DWT)</option>
+                  <option value="Panamax" selected>Panamax / Kamsarmax (70k-85k DWT)</option>
+                  <option value="Capesize">Capesize / Newcastlemax (150k-210k DWT)</option>
+                </select>
+              </div>
+              
+              <div class="form-group full-width">
+                <label>Cargo Quantity (Metric Tonnes)</label>
+                <div class="slider-container">
+                  <input type="range" id="cargoQuantitySlider" min="20000" max="200000" step="5000" value="100000">
+                  <input type="number" id="cargoQuantityInput" min="20000" max="200000" step="5000" value="100000" style="width: 95px;">
+                  <span class="slider-val" id="cargoQuantityVal">100k MT</span>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label>Laden Vessel Draft (Meters)</label>
+                <div class="slider-container">
+                  <input type="range" id="vesselDraftSlider" min="8.0" max="20.0" step="0.1" value="14.8">
+                  <input type="number" id="vesselDraftInput" min="8.0" max="20.0" step="0.1" value="14.8" style="width: 70px;">
+                  <span class="slider-val" id="vesselDraftVal">14.8m</span>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="vesselLoaInput">Length Overall (LOA in Meters)</label>
+                <input type="number" id="vesselLoaInput" min="150" max="350" step="1" value="229">
+              </div>
+            </div>
+          </div>
+
+          <!-- Gate 1 Hydrodynamics Card -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-emerald)" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+                Gate 1: Physical & MetOcean Safety Gate
+              </div>
+              <span class="badge badge-success">ABSOLUTE GATEKEEPER 1</span>
+            </div>
+            
+            <div id="gate1Banner" class="gate1-banner approved">
+              <!-- Populated by safetyGate.js -->
+            </div>
+            
+            <div class="telemetry-grid">
+              <div class="telemetry-item">
+                <div class="telemetry-label">Draft Margin</div>
+                <div class="telemetry-val" id="draftMarginVal">+1.2m</div>
+                <div class="telemetry-sub safe" id="draftMarginSub">Max: 16.0m (Safe)</div>
+              </div>
+              
+              <div class="telemetry-item">
+                <div class="telemetry-label">LOA Clearance</div>
+                <div class="telemetry-val" id="loaMarginVal">+51.0m</div>
+                <div class="telemetry-sub safe" id="loaMarginSub">Max LOA: 280m</div>
+              </div>
+              
+              <div class="telemetry-item">
+                <div class="telemetry-label">Wave Height</div>
+                <div class="telemetry-val" id="waveVal">1.4m</div>
+                <div class="telemetry-sub safe" id="waveSub">Safe Swell (&lt; 2.5m)</div>
+              </div>
+              
+              <div class="telemetry-item">
+                <div class="telemetry-label">Wind Speed</div>
+                <div class="telemetry-val" id="windVal">24.8 km/h</div>
+                <div class="telemetry-sub safe" id="windSub">Safe Gusts (&lt; 40km/h)</div>
+              </div>
+            </div>
+            
+            <div style="background: var(--bg-surface-subtle); border-radius: 8px; padding: 0.75rem; font-size: 0.75rem; color: var(--text-secondary); line-height: 1.4; border: 1px solid var(--border-subtle);">
+              <strong style="color: var(--accent-primary);">Hydrodynamic Protocol:</strong> Indian East Coast major port entrance channels require positive Under-Keel Clearance (UKC) and MetOcean wave limits prior to issuing pilotage clearance.
+            </div>
+          </div>
+        </section>
+
+        <!-- Freight Forecasting Engine & Curve Chart Card -->
+        <section class="card" id="forecastingSection">
+          <div class="card-header">
+            <div class="card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2">
+                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                <polyline points="16 7 22 7 22 13"></polyline>
+              </svg>
+              Intelligent Forward Freight Curve Engine
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <span class="badge" id="forecastTrendBadge">RISING</span>
+              <span class="badge badge-info">92% CONFIDENCE CORRIDOR</span>
+            </div>
+          </div>
+          
+          <div class="telemetry-grid" style="grid-template-columns: repeat(6, 1fr); margin-bottom: 0.75rem;">
+            <div class="telemetry-item">
+              <div class="telemetry-label">Current Spot</div>
+              <div class="telemetry-val" id="currentRateVal" style="color: #D97706;">$14.20</div>
+            </div>
+            <div class="telemetry-item">
+              <div class="telemetry-label">30-Day Forward</div>
+              <div class="telemetry-val" id="forecast30dVal">$15.10</div>
+            </div>
+            <div class="telemetry-item">
+              <div class="telemetry-label">90-Day Forward (Peak)</div>
+              <div class="telemetry-val" id="forecast90dVal" style="color: #DC2626;">$16.80</div>
+            </div>
+            <div class="telemetry-item">
+              <div class="telemetry-label">180-Day Forward</div>
+              <div class="telemetry-val" id="forecast180dVal">$15.40</div>
+            </div>
+            <div class="telemetry-item">
+              <div class="telemetry-label">12-Month Curve</div>
+              <div class="telemetry-val" id="forecast12mVal">$14.90</div>
+            </div>
+            <div class="telemetry-item" style="background: #F0FDF4; border-color: #86EFAC;">
+              <div class="telemetry-label" style="color: #047857;">Avoided Cost</div>
+              <div class="telemetry-val" id="avoidedPremiumVal" style="color: #059669;">$260,000</div>
+            </div>
+          </div>
+          
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; font-size: 0.8rem;">
+            <span>Optimal Entry Window: <strong style="color: #059669;" id="optimalWindowVal">15 Sep - 30 Sep 2026</strong></span>
+            <span style="font-size: 0.72rem; color: var(--text-muted);">Confidence bounds: ±8% Econometric band</span>
+          </div>
+          
+          <div id="forecastChartContainer" class="chart-container">
+            <!-- Rendered by freightForecast.js -->
+          </div>
+        </section>
+
+        <!-- Vessel Ranking Engine Card -->
+        <section class="card" id="vesselRankingSection">
+          <div class="card-header">
+            <div class="card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2">
+                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+              </svg>
+              Multi-Vessel Economic & Hydrodynamic Optimization
+            </div>
+            <span class="badge badge-info">PIANC SIZING STANDARDS</span>
+          </div>
+          
+          <div style="overflow-x: auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Vessel Class</th>
+                  <th>Capacity</th>
+                  <th>Draft / LOA</th>
+                  <th>Utilization</th>
+                  <th>Voyages</th>
+                  <th>Unit Rate</th>
+                  <th>Total Spend</th>
+                  <th>Port Compatibility</th>
+                </tr>
+              </thead>
+              <tbody id="vesselRankingTableBody">
+                <!-- Rendered by vesselOptimizer.js -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- FEATURE 1: Multiple-Voyage Contract Strategy Planner Card -->
+        <section class="card" id="contractPlannerSection">
+          <div class="card-header">
+            <div class="card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-emerald)" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+              </svg>
+              Multiple-Voyage Contract Strategy Planner
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <span class="badge badge-success" id="contractRecBadge">SHORT-TERM MULTIPLE VOYAGE</span>
+              <span class="badge badge-info" id="contractSavingsVal">+$1.36M / Year</span>
+            </div>
+          </div>
+          
+          <div id="contractPlannerContainer" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1rem;">
+            <!-- Populated by contractPlanner.js -->
+          </div>
+          
+          <div style="background: var(--bg-surface-subtle); border-radius: 8px; padding: 0.85rem; border-left: 3px solid var(--accent-emerald); border: 1px solid var(--border-subtle); border-left-width: 3.5px;">
+            <div style="font-size: 0.75rem; font-weight: 800; color: #047857; text-transform: uppercase; margin-bottom: 4px;">
+              STRATEGIC CONTRACTING DIRECTIVE:
+            </div>
+            <ul id="contractRationaleList" style="padding-left: 1.2rem; font-size: 0.82rem; color: var(--text-navy-700); display: flex; flex-direction: column; gap: 3px;">
+              <!-- Populated by contractPlanner.js -->
+            </ul>
+          </div>
+        </section>
+
+        <!-- FEATURE 2 & 3: Disruption Alerts & Idle Management Grid -->
+        <section class="grid-2col" id="alertsSection">
+          <!-- Early Warning / Disruption Alert Center -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-amber)" stroke-width="2">
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                  <line x1="12" y1="9" x2="12" y2="13"></line>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+                Early Warning & Disruption Alert Center
+              </div>
+              <div style="display: flex; gap: 6px; align-items: center;">
+                <span class="badge badge-warning" id="alertRiskLevelBadge">HIGH RISK</span>
+                <span style="font-family: var(--font-mono); font-weight: 800; color: #D97706;" id="alertCompositeScoreVal">74/100</span>
+              </div>
+            </div>
+            
+            <div id="disruptionAlertsList" style="display: flex; flex-direction: column; gap: 0.65rem;">
+              <!-- Populated by alerts.js -->
+            </div>
+          </div>
+
+          <!-- Idle Time & Alternative Employment Engine -->
+          <div class="card" id="idleSection">
+            <div class="card-header">
+              <div class="card-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                Idle Time & Alternative Employment Engine
+              </div>
+              <span class="badge badge-success" id="idleRecBadge">ACCEPT CO-LOAD & REPOSITION</span>
+            </div>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; background: var(--accent-rose-light); border: 1.5px solid var(--accent-rose-border); border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 0.85rem;">
+              <div>
+                <div style="font-size: 0.7rem; color: #991B1B; text-transform: uppercase; font-weight: 800;">Current Idle Burn (Standby)</div>
+                <div style="font-family: var(--font-mono); font-size: 1.35rem; font-weight: 900; color: #DC2626;" id="idleBaselineLossVal">-$100,800</div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-size: 0.7rem; color: #991B1B; text-transform: uppercase; font-weight: 800;">Expected Inactive Days</div>
+                <div style="font-family: var(--font-mono); font-size: 1.15rem; font-weight: 800; color: #0A192F;" id="idleBaselineDaysVal">4.8 Days / Voyage</div>
+              </div>
+            </div>
+            
+            <div id="idleAlternativesContainer" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem;">
+              <!-- Populated by idleManagement.js -->
+            </div>
+          </div>
+        </section>
+
+        <!-- Strategic Pillar Modules 01, 02, 03 Grid -->
+        <section class="grid-3col" id="modulesSection">
+          <!-- Module 01 -->
+          <div class="module-card">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                <div class="module-tag">Module 01 // Financials</div>
+                <div class="module-number-pill">01</div>
+              </div>
+              <div style="font-size: 0.95rem; font-weight: 900; color: var(--text-navy-900); margin-top: 4px;">Dynamic Stockpiling Engine</div>
+              <div class="metric-highlight">
+                <div class="metric-big" id="moduleANetBenefit">+$1.08M</div>
+                <div class="metric-unit">Net Value</div>
+              </div>
+              <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 0.75rem;">
+                <span class="badge badge-success" id="moduleARecBadge">OPTIMAL</span>
+                <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600;">Ahead of rate spike</span>
+              </div>
+              <p style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.4;">
+                Quantifies pre-monsoon bulk stockpiling by balancing avoided price spikes & demurrage against holding & capital charges.
+              </p>
+            </div>
+            <button class="action-btn" id="openStockpileModalBtn" style="margin-top: 1rem;">
+              OPEN FINANCIAL DEEP-DIVE
+            </button>
+          </div>
+
+          <!-- Module 02 -->
+          <div class="module-card">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                <div class="module-tag">Module 02 // Seasonality</div>
+                <div class="module-number-pill">02</div>
+              </div>
+              <div style="font-size: 0.95rem; font-weight: 900; color: var(--text-navy-900); margin-top: 4px;">12-Month Risk Heatmap</div>
+              <div class="metric-highlight">
+                <div class="metric-big" id="moduleBRiskSummary" style="font-size: 1.35rem; color: #DC2626;">July (Peak Swell)</div>
+              </div>
+              <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 0.75rem;">
+                <span class="badge badge-danger">MONSOON SWELL</span>
+                <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600;">June - September</span>
+              </div>
+              <p style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.4;">
+                Multi-factor risk tracking across East Coast ports factoring cyclone depressions, swell surges, and railway rake availability.
+              </p>
+            </div>
+            <button class="action-btn" id="openRiskModalBtn" style="margin-top: 1rem;">
+              OPEN 12-MONTH MATRIX
+            </button>
+          </div>
+
+          <!-- Module 03 -->
+          <div class="module-card">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                <div class="module-tag">Module 03 // PSU Sharing</div>
+                <div class="module-number-pill">03</div>
+              </div>
+              <div style="font-size: 0.95rem; font-weight: 900; color: var(--text-navy-900); margin-top: 4px;">Inter-PSU Co-Loading Radar</div>
+              <div class="metric-highlight">
+                <div class="metric-big" id="moduleCSavings" style="color: #059669;">+$280k</div>
+                <div class="metric-unit">Synergy Savings</div>
+              </div>
+              <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 0.75rem;">
+                <span class="badge badge-success" id="moduleCPartnerBadge">SAIL MATCH (98%)</span>
+                <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600;" id="moduleCCo2Badge">-510 MT CO₂</span>
+              </div>
+              <p style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.4;">
+                Identifies shared bulk chartering opportunities across SAIL, RINL, NMDC, and Coal India to achieve mega-vessel economies.
+              </p>
+            </div>
+            <button class="action-btn" id="openColoadModalBtn" style="margin-top: 1rem;">
+              OPEN CO-LOADING ENGINE
+            </button>
+          </div>
+        </section>
+
+        <!-- Master Executive Decision Directive Card -->
+        <section class="executive-card" id="executiveDirectiveSection">
+          <div class="exec-header">
+            <div>
+              <div style="font-size: 0.72rem; color: var(--accent-primary); font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;">
+                MASTER PROCUREMENT DIRECTIVE // EXECUTIVE CLEARANCE
+              </div>
+              <div style="font-size: 1.25rem; font-weight: 900; color: var(--text-navy-900); margin-top: 2px;">
+                AI-Synthesized Chartering Directive
+              </div>
+            </div>
+            <div id="execStatusBadge" class="exec-status-badge go">
+              FINAL RECOMMENDATION: GO // GREEN CLEARANCE
+            </div>
+          </div>
+          
+          <div class="exec-grid" style="grid-template-columns: repeat(4, 1fr);">
+            <div class="exec-item">
+              <div class="exec-item-label">Recommended Vessel</div>
+              <div class="exec-item-value" id="execVesselVal" style="color: var(--accent-primary);">PANAMAX / KAMSARMAX</div>
+            </div>
+            
+            <div class="exec-item">
+              <div class="exec-item-label">Route Corridor</div>
+              <div class="exec-item-value" id="execRouteVal">Australia ➔ Paradip</div>
+            </div>
+            
+            <div class="exec-item">
+              <div class="exec-item-label">Recommended Contract</div>
+              <div class="exec-item-value" id="execContractVal" style="color: #059669; font-size: 0.95rem;">SHORT-TERM MULTIPLE VOYAGE</div>
+            </div>
+            
+            <div class="exec-item">
+              <div class="exec-item-label">Annual Spend Savings</div>
+              <div class="exec-item-value" id="execAnnualSavingsVal" style="color: #D97706;">+$1,360,000/Year vs Spot</div>
+            </div>
+            
+            <div class="exec-item">
+              <div class="exec-item-label">Vessel Idle Risk</div>
+              <div class="exec-item-value" id="execIdleRiskVal" style="color: #059669; font-size: 0.95rem;">LOW // CO-LOAD OPTIMIZED</div>
+            </div>
+            
+            <div class="exec-item" style="grid-column: span 3;">
+              <div class="exec-item-label">Active Disruption Alert</div>
+              <div class="exec-item-value" id="execActiveAlertVal" style="color: #D97706; font-size: 0.95rem;">POST-MONSOON BERTH CONGESTION ADVISORY</div>
+            </div>
+          </div>
+          
+          <div id="execReasonsContainer" class="exec-reasons">
+            <div class="exec-reasons-title">AUDITABLE AI RATIONALE & CLEARANCE PROOF:</div>
+            <ul id="execReasonsList" class="exec-reasons-list">
+              <!-- Rendered by executiveDecision.js -->
+            </ul>
+          </div>
+          
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; font-size: 0.72rem; color: var(--text-muted);">
+            <span>Security Verification: <strong style="color: var(--text-navy-800);" id="execSignatureVal">NAVI-STEEL-GO-VERIFIED-SAIL-PROCUREMENT</strong></span>
+            <span>SIH 2026 Problem Statement SIH26006 Compliance Engine</span>
+          </div>
+        </section>
+
+      </main>
+
+    </div>
+  </div>
 
   <!-- Modals -->
 
@@ -529,7 +1010,7 @@
   <div id="rejectionModal" class="modal-backdrop">
     <div class="modal-content" style="max-width: 650px; border-color: var(--accent-rose);">
       <div class="modal-header">
-        <div class="modal-title" style="color: #F87171;">⚠️ GATE 1 PHYSICAL HYDRODYNAMIC REJECTION</div>
+        <div class="modal-title" style="color: #DC2626;">⚠️ GATE 1 PHYSICAL HYDRODYNAMIC REJECTION</div>
         <button class="close-btn">&times;</button>
       </div>
       <div id="rejectionModalBody"></div>
@@ -540,7 +1021,7 @@
   <div id="stockpileModal" class="modal-backdrop">
     <div class="modal-content">
       <div class="modal-header">
-        <div class="modal-title">Module A: Dynamic Peak Season Stockpiling Engine</div>
+        <div class="modal-title">Module 01: Dynamic Peak Season Stockpiling Engine</div>
         <button class="close-btn">&times;</button>
       </div>
       <div id="stockpileModalBody"></div>
@@ -551,7 +1032,7 @@
   <div id="riskModal" class="modal-backdrop">
     <div class="modal-content">
       <div class="modal-header">
-        <div class="modal-title">Module B: 12-Month Chronological Risk Heatmap</div>
+        <div class="modal-title">Module 02: 12-Month Chronological Risk Heatmap</div>
         <button class="close-btn">&times;</button>
       </div>
       <div id="riskModalBody"></div>
@@ -562,10 +1043,62 @@
   <div id="coloadModal" class="modal-backdrop">
     <div class="modal-content">
       <div class="modal-header">
-        <div class="modal-title">Module C: Inter-PSU Bulk Co-Loading Scanner</div>
+        <div class="modal-title">Module 03: Inter-PSU Bulk Co-Loading Scanner</div>
         <button class="close-btn">&times;</button>
       </div>
       <div id="coloadModalBody"></div>
+    </div>
+  </div>
+
+  <!-- Floating NAVI AI Assistant Orb & Drawer -->
+  <div class="navi-ai-orb" id="naviAiOrb" title="Open Navi AI Advisor">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10a9.96 9.96 0 0 1-4.587-1.11L3 22l1.11-4.413A9.96 9.96 0 0 1 2 12C2 6.477 6.477 2 12 2z"></path>
+    </svg>
+  </div>
+
+  <div class="navi-ai-panel" id="naviAiPanel">
+    <div class="navi-ai-header">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="width: 8px; height: 8px; border-radius: 50%; background: #10B981;"></span>
+        <span style="font-weight: 800; font-size: 0.85rem;">NAVI AI Procurement Advisor</span>
+      </div>
+      <button class="close-btn" id="closeNaviAiBtn" style="color: #94A3B8; font-size: 1.2rem;">&times;</button>
+    </div>
+    <div class="navi-ai-body">
+      <div style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">
+        I have analyzed current spot rates, monsoonal weather risks, and PSU coordination schedules. Here are 3 immediate optimization actions:
+      </div>
+      
+      <div class="ai-insight-card" data-target="contractPlannerSection">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+          <span style="font-weight: 800; font-size: 0.82rem; color: var(--text-navy-900);">1. Lock Short-Term COA</span>
+          <span class="badge badge-success" style="font-size: 0.65rem;">+$1.36M</span>
+        </div>
+        <div style="font-size: 0.72rem; color: var(--text-muted);">
+          Forward curve indicates a +18% peak rate spike in Q3. Locking a multi-voyage contract hedges 8 voyages.
+        </div>
+      </div>
+
+      <div class="ai-insight-card" data-target="modulesSection">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+          <span style="font-weight: 800; font-size: 0.82rem; color: var(--text-navy-900);">2. Pre-Monsoon Stockpile</span>
+          <span class="badge badge-info" style="font-size: 0.65rem;">Optimal</span>
+        </div>
+        <div style="font-size: 0.72rem; color: var(--text-muted);">
+          Advance procurement by 30 days to bypass Paradip monsoonal swell delays and save +$1.08M net.
+        </div>
+      </div>
+
+      <div class="ai-insight-card" data-target="modulesSection">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+          <span style="font-weight: 800; font-size: 0.82rem; color: var(--text-navy-900);">3. Inter-PSU Co-Loading</span>
+          <span class="badge badge-success" style="font-size: 0.65rem;">98% Match</span>
+        </div>
+        <div style="font-size: 0.72rem; color: var(--text-muted);">
+          Share Capesize capacity with SAIL IISCO to capture +$280k synergy savings and mitigate 510 MT CO₂.
+        </div>
+      </div>
     </div>
   </div>
 

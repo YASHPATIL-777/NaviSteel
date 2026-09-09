@@ -21,10 +21,10 @@ function renderCurveChart(data) {
   if (!container) return;
   
   const width = container.clientWidth || 550;
-  const height = 180;
+  const height = 185;
   const padLeft = 45;
   const padRight = 20;
-  const padTop = 15;
+  const padTop = 18;
   const padBottom = 25;
   
   const allRates = [...data.historical_rates, ...data.forward_rates, ...data.upper_bounds, ...data.lower_bounds];
@@ -53,15 +53,15 @@ function renderCurveChart(data) {
     <svg width="100%" height="${height}" viewBox="0 0 ${width} ${height}" style="overflow: visible;">
       <defs>
         <linearGradient id="corridorGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.25"/>
-          <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.03"/>
+          <stop offset="0%" stop-color="#0284C7" stop-opacity="0.18"/>
+          <stop offset="100%" stop-color="#0284C7" stop-opacity="0.02"/>
         </linearGradient>
       </defs>
       
       <!-- Grid lines -->
-      <line x1="${padLeft}" y1="${getY(minRate)}" x2="${width - padRight}" y2="${getY(minRate)}" stroke="rgba(255,255,255,0.08)" stroke-dasharray="3,3"/>
-      <line x1="${padLeft}" y1="${getY((minRate + maxRate)/2)}" x2="${width - padRight}" y2="${getY((minRate + maxRate)/2)}" stroke="rgba(255,255,255,0.08)" stroke-dasharray="3,3"/>
-      <line x1="${padLeft}" y1="${getY(maxRate)}" x2="${width - padRight}" y2="${getY(maxRate)}" stroke="rgba(255,255,255,0.08)" stroke-dasharray="3,3"/>
+      <line x1="${padLeft}" y1="${getY(minRate)}" x2="${width - padRight}" y2="${getY(minRate)}" stroke="#E2E8F0" stroke-dasharray="3,3"/>
+      <line x1="${padLeft}" y1="${getY((minRate + maxRate)/2)}" x2="${width - padRight}" y2="${getY((minRate + maxRate)/2)}" stroke="#E2E8F0" stroke-dasharray="3,3"/>
+      <line x1="${padLeft}" y1="${getY(maxRate)}" x2="${width - padRight}" y2="${getY(maxRate)}" stroke="#E2E8F0" stroke-dasharray="3,3"/>
       
       <!-- Confidence Corridor -->
       <polygon points="${corridorPolygon}" fill="url(#corridorGrad)" />
@@ -70,27 +70,27 @@ function renderCurveChart(data) {
       <polyline points="${histPoints}" fill="none" stroke="#94A3B8" stroke-width="2" stroke-dasharray="4,4"/>
       
       <!-- Forward Forecast Line -->
-      <polyline points="${fwdPoints}" fill="none" stroke="#38BDF8" stroke-width="2.5"/>
+      <polyline points="${fwdPoints}" fill="none" stroke="#0284C7" stroke-width="2.5"/>
       
       <!-- Present Day Vertical Marker -->
-      <line x1="${getX(5)}" y1="${padTop}" x2="${getX(5)}" y2="${height - padBottom}" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="2,2"/>
-      <text x="${getX(5)}" y="${padTop - 3}" fill="#F59E0B" font-size="9" font-family="monospace" text-anchor="middle">TODAY</text>
+      <line x1="${getX(5)}" y1="${padTop}" x2="${getX(5)}" y2="${height - padBottom}" stroke="#D97706" stroke-width="1.5" stroke-dasharray="2,2"/>
+      <text x="${getX(5)}" y="${padTop - 4}" fill="#D97706" font-size="9" font-family="sans-serif" font-weight="700" text-anchor="middle">TODAY</text>
       
       <!-- Data circles -->
       ${data.forward_rates.map((r, i) => `
-        <circle cx="${getX(5 + i)}" cy="${getY(r)}" r="${i === 2 ? 4.5 : 3}" fill="${i === 2 ? '#EF4444' : '#38BDF8'}" stroke="#050B14" stroke-width="1.5"/>
+        <circle cx="${getX(5 + i)}" cy="${getY(r)}" r="${i === 2 ? 5 : 3.5}" fill="${i === 2 ? '#EF4444' : '#0284C7'}" stroke="#FFFFFF" stroke-width="2"/>
       `).join('')}
       
       <!-- Y-Axis labels -->
-      <text x="${padLeft - 6}" y="${getY(maxRate) + 3}" fill="#64748B" font-size="9" font-family="monospace" text-anchor="end">$${maxRate.toFixed(1)}</text>
-      <text x="${padLeft - 6}" y="${getY((minRate + maxRate)/2) + 3}" fill="#64748B" font-size="9" font-family="monospace" text-anchor="end">$${((minRate+maxRate)/2).toFixed(1)}</text>
-      <text x="${padLeft - 6}" y="${getY(minRate) + 3}" fill="#64748B" font-size="9" font-family="monospace" text-anchor="end">$${minRate.toFixed(1)}</text>
+      <text x="${padLeft - 6}" y="${getY(maxRate) + 3}" fill="#64748B" font-size="9" font-family="monospace" font-weight="600" text-anchor="end">$${maxRate.toFixed(1)}</text>
+      <text x="${padLeft - 6}" y="${getY((minRate + maxRate)/2) + 3}" fill="#64748B" font-size="9" font-family="monospace" font-weight="600" text-anchor="end">$${((minRate+maxRate)/2).toFixed(1)}</text>
+      <text x="${padLeft - 6}" y="${getY(minRate) + 3}" fill="#64748B" font-size="9" font-family="monospace" font-weight="600" text-anchor="end">$${minRate.toFixed(1)}</text>
       
       <!-- X-Axis Key Labels -->
-      <text x="${getX(0)}" y="${height - 6}" fill="#64748B" font-size="8" font-family="monospace">Apr 26</text>
-      <text x="${getX(5)}" y="${height - 6}" fill="#F59E0B" font-size="8" font-family="monospace" text-anchor="middle">Sep 26</text>
-      <text x="${getX(7)}" y="${height - 6}" fill="#38BDF8" font-size="8" font-family="monospace" text-anchor="middle">Nov 26 (Peak)</text>
-      <text x="${getX(totalPoints - 1)}" y="${height - 6}" fill="#64748B" font-size="8" font-family="monospace" text-anchor="end">Aug 27</text>
+      <text x="${getX(0)}" y="${height - 6}" fill="#64748B" font-size="8.5" font-family="sans-serif">Apr 26</text>
+      <text x="${getX(5)}" y="${height - 6}" fill="#D97706" font-size="8.5" font-family="sans-serif" font-weight="700" text-anchor="middle">Sep 26</text>
+      <text x="${getX(7)}" y="${height - 6}" fill="#0284C7" font-size="8.5" font-family="sans-serif" font-weight="700" text-anchor="middle">Nov 26 (Peak)</text>
+      <text x="${getX(totalPoints - 1)}" y="${height - 6}" fill="#64748B" font-size="8.5" font-family="sans-serif" text-anchor="end">Aug 27</text>
     </svg>
   `;
 }

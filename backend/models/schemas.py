@@ -332,3 +332,20 @@ class WeatherResponse(BaseModel):
     is_live_api: bool
     timestamp: str
     fallback_reason: Optional[str] = None
+
+class AISVesselResponse(BaseModel):
+    name: str
+    mmsi: str
+    imo: str
+    latitude: float
+    longitude: float
+    speed_knots: float
+    course: float
+    heading: float
+    draft_m: float
+    destination: str
+    eta: str
+    timestamp: str
+    is_live: bool
+    source: str
+

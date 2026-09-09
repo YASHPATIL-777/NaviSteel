@@ -12,9 +12,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 try:
-    from backend.routes import safety, forecast, vessels, strategy, weather, decision, contracts, idle, alerts
+    from backend.routes import safety, forecast, vessels, strategy, weather, decision, contracts, idle, alerts, ais
 except ImportError:
-    from routes import safety, forecast, vessels, strategy, weather, decision, contracts, idle, alerts
+    from routes import safety, forecast, vessels, strategy, weather, decision, contracts, idle, alerts, ais
 
 app = FastAPI(
     title="NaviSteel Control Tower API",
@@ -41,6 +41,7 @@ app.include_router(strategy.router)
 app.include_router(idle.router)
 app.include_router(weather.router)
 app.include_router(decision.router)
+app.include_router(ais.router)
 
 @app.get("/api/health", tags=["Health"])
 def health_check():

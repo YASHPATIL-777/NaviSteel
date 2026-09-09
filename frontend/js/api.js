@@ -43,5 +43,7 @@ export const API = {
   getRiskMatrix: (destination) => postJSON("/strategy/risk", { destination }),
   getColoadingMatches: (payload) => postJSON("/strategy/coload", payload),
   getExecutiveDecision: (payload) => postJSON("/decision", payload),
-  getPortWeather: (port) => getJSON(`/weather/${encodeURIComponent(port)}`)
+  getPortWeather: (port) => getJSON(`/weather/${encodeURIComponent(port)}`),
+  getAISVesselTelemetry: (identifier = "9412345") => getJSON(`/ais/vessel/${encodeURIComponent(identifier)}`)
 };
+
