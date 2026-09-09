@@ -1,5 +1,6 @@
 import { CONFIG } from './config.js';
 import { API } from './api.js';
+import { ROLE_CONFIG } from './roleConfig.js';
 import { renderSafetyGate, showRejectionModal } from './safetyGate.js';
 import { renderFreightForecast } from './freightForecast.js';
 import { renderVesselOptimization } from './vesselOptimizer.js';
@@ -10,7 +11,8 @@ import { renderIdleManagement } from './idleManagement.js';
 import { renderRiskCard, showRiskModal } from './riskPlanner.js';
 import { renderColoadCard, showColoadModal } from './coLoading.js';
 import { renderExecutiveDecision } from './executiveDecision.js';
-import { initAuth } from './auth.js';
+import { initAuth, applyRoleLens } from './auth.js';
+
 
 // Application State Store
 let state = {
@@ -217,13 +219,142 @@ export async function executePipeline() {
     state.decision = decisionRes;
     renderExecutiveDecision(decisionRes);
     
-    // 11. Sync AIS Telemetry (Live Datalastic or Demo Fallback)
+    // 11. Sync Top KPI Strip with Active Role Lens & Scenario Results
+    const activeLens = sessionStorage.getItem("navisteel_active_lens") || "charterer";
+    renderRoleKPIs(activeLens);
+
+    // 12. Sync AIS Telemetry (Live Datalastic or Demo Fallback)
     await syncAISVesselTelemetry(state.currentScenario);
 
   } catch (err) {
     console.error("Pipeline execution failed:", err);
   }
 }
+
+// Synchronize Top KPI Strip based on Operational Role Lens
+export function renderRoleKPIs(roleKey = "charterer") {
+  const cfg = ROLE_CONFIG[roleKey] || ROLE_CONFIG.charterer;
+  const kpiCards = document.querySelectorAll(".kpi-strip .kpi-card");
+  if (!kpiCards || kpiCards.length < 6) return;
+
+  cfg.kpis.forEach((kpi, idx) => {
+    if (idx >= kpiCards.length) return;
+    const card = kpiCards[idx];
+    const titleSpan = card.querySelector(".kpi-title span:first-child");
+    const badgeSpan = card.querySelector(".kpi-title .badge");
+    const valueSpan = card.querySelector(".kpi-value");
+    const subSpan = card.querySelector(".kpi-value-row span:last-child");
+
+    if (titleSpan) titleSpan.innerText = kpi.title;
+    if (badgeSpan) badgeSpan.innerText = kpi.badge;
+
+    let displayVal = kpi.defaultVal;
+    let subVal = kpi.sub;
+    let colorVal = "";
+
+    if (kpi.key === "activeAnalyses") {
+      displayVal = "12";
+      subVal = "7 Ports Monitored";
+    } else if (kpi.key === "projectedImports") {
+      displayVal = "3.2M";
+      subVal = "MT (H2 Target)";
+    } else if (kpi.key === "portsMonitored") {
+      displayVal = "7";
+      subVal = "Deep-Water Berths";
+    } else if (kpi.key === "optimizedFreight") {
+      if (state.safety && !state.safety.approved) {
+        displayVal = "NO-GO";
+        colorVal = "#DC2626";
+        subVal = "UNSAFE";
+      } else if (state.vessels && state.vessels.rankings) {
+        const bestOpt = state.vessels.rankings.find(r => r.compliant && r.is_best_fit) || state.vessels.rankings[0];
+        displayVal = bestOpt ? `$${bestOpt.freight_rate.toFixed(2)}` : (state.forecast ? `$${state.forecast.current_rate.toFixed(2)}` : "$14.20");
+        subVal = bestOpt ? `${bestOpt.vessel_type.split(" ")[0]} Index` : "Panamax Index";
+      }
+    } else if (kpi.key === "annualSavings" || kpi.key === "contractSavings") {
+      if (state.safety && !state.safety.approved) {
+        displayVal = "$0";
+        colorVal = "var(--text-muted)";
+      } else if (state.contracts) {
+        displayVal = `+$${(state.contracts.annual_savings_vs_spot / 1e6).toFixed(2)}M`;
+        colorVal = "#059669";
+        subVal = "vs Spot Benchmark";
+      }
+    } else if (kpi.key === "co2Mitigation") {
+      if (state.safety && !state.safety.approved) {
+        displayVal = "0";
+      } else if (state.coload && state.coload.best_match) {
+        displayVal = `${state.coload.best_match.co2_reduction_mt.toFixed(0)}`;
+        colorVal = "#059669";
+        subVal = "MT CO₂ Avoided";
+      }
+    } else if (kpi.key === "riskStatus") {
+      if (state.safety && !state.safety.approved) {
+        displayVal = "98 / 100";
+        colorVal = "#DC2626";
+        subVal = "Critical";
+      } else if (state.alerts) {
+        displayVal = `${state.alerts.composite_risk_score} / 100`;
+        colorVal = state.alerts.composite_risk_score > 60 ? "#D97706" : "#059669";
+        subVal = state.alerts.risk_level === "HIGH" ? "Watch Level" : "Normal Level";
+      }
+    } else if (kpi.key === "supplyResilience") {
+      displayVal = "94.8%";
+      colorVal = "#059669";
+      subVal = "Berth Clearance Rate";
+    } else if (kpi.key === "annualDemand") {
+      displayVal = `${(state.cargo_mt * (state.currentScenario === 3 ? 4 : 6) / 1000).toFixed(0)}k`;
+      subVal = `MT ${state.cargo_type}`;
+    } else if (kpi.key === "stockpileNet") {
+      if (state.stockpile) {
+        displayVal = `+$${(state.stockpile.net_strategic_benefit / 1000).toFixed(0)}k`;
+        colorVal = "#059669";
+        subVal = state.stockpile.recommendation;
+      }
+    } else if (kpi.key === "forecastPeak") {
+      if (state.forecast) {
+        displayVal = `$${state.forecast.forecast_90d.toFixed(2)}`;
+        colorVal = "#DC2626";
+        subVal = "Q3 Projected Peak";
+      }
+    } else if (kpi.key === "coloadSynergy") {
+      if (state.coload && state.coload.best_match) {
+        displayVal = `${state.coload.best_match.match_score}% Match`;
+        colorVal = "#059669";
+        subVal = `${state.coload.best_match.partner} Parcel`;
+      }
+    } else if (kpi.key === "currentWave") {
+      displayVal = "1.4m";
+      colorVal = "#059669";
+      subVal = "Safe Swell (< 2.5m)";
+    } else if (kpi.key === "currentWind") {
+      displayVal = "24.8";
+      colorVal = "#059669";
+      subVal = "km/h (< 40 km/h)";
+    } else if (kpi.key === "gateStatus") {
+      if (state.safety && !state.safety.approved) {
+        displayVal = "REJECTED";
+        colorVal = "#DC2626";
+        subVal = "Draft Violation (-3.0m)";
+      } else {
+        displayVal = "APPROVED";
+        colorVal = "#059669";
+        subVal = "+1.5m Draft Margin";
+      }
+    }
+
+    if (valueSpan) {
+      valueSpan.innerText = displayVal;
+      if (colorVal) valueSpan.style.color = colorVal;
+      else valueSpan.style.color = "var(--text-navy-900)";
+    }
+    if (subSpan) {
+      subSpan.innerText = subVal;
+    }
+  });
+}
+
+
 
 // Synchronize AIS Vessel Telemetry Card & Map Marker
 export async function syncAISVesselTelemetry(scenarioId = 1) {
@@ -496,8 +627,32 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   });
   
+  // Secondary CTA Click Listener (Context-Aware per active role)
+  const heroSecondaryCta = document.getElementById("heroSecondaryCta");
+  if (heroSecondaryCta) {
+    heroSecondaryCta.addEventListener("click", () => {
+      const activeLens = sessionStorage.getItem("navisteel_active_lens") || "charterer";
+      const cfg = ROLE_CONFIG[activeLens] || ROLE_CONFIG.charterer;
+      loadScenario(cfg.secondaryCtaScenario || 1);
+    });
+  }
+
   // Initialize Authentication & Bootstrap Control Tower on Auth
-  initAuth(() => {
-    loadScenario(1);
-  });
+  initAuth(
+    () => {
+      loadScenario(1);
+    },
+    (roleKey) => {
+      renderRoleKPIs(roleKey);
+      const cfg = ROLE_CONFIG[roleKey];
+      if (cfg && cfg.focusSectionId) {
+        const targetSection = document.getElementById(cfg.focusSectionId);
+        if (targetSection) {
+          targetSection.classList.add("role-highlight-pulse");
+          setTimeout(() => targetSection.classList.remove("role-highlight-pulse"), 1200);
+        }
+      }
+    }
+  );
 });
+

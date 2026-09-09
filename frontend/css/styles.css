@@ -458,8 +458,51 @@ body {
 .user-dropdown-divider {
   height: 1px;
   background: var(--border-color);
-  margin: 0.35rem 0;
+  margin: 0.4rem 0;
 }
+
+.role-lens-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.45rem 0.6rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.role-lens-btn:hover {
+  background: var(--bg-surface-subtle);
+  color: var(--navy-primary);
+}
+
+.role-lens-btn.active {
+  background: rgba(37, 99, 235, 0.08);
+  border-color: rgba(37, 99, 235, 0.25);
+  color: var(--navy-primary);
+}
+
+.role-lens-btn.active .lens-check {
+  color: var(--navy-primary);
+  font-weight: 900;
+}
+
+.role-highlight-pulse {
+  animation: roleHighlightPulse 1.2s cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+@keyframes roleHighlightPulse {
+  0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(37, 99, 235, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+}
+
 
 .logout-item {
   color: #DC2626 !important;

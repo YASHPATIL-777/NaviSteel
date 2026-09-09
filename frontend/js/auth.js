@@ -1,6 +1,89 @@
-// NaviSteel Prototype Authentication Controller (Frontend Prototype Access Gateway)
+// NaviSteel Prototype Authentication & Role-Based Lens Controller
+import { ROLE_CONFIG, getSidebarIconSvg } from './roleConfig.js';
 
-export function initAuth(onAuthSuccess) {
+export function getRoleKeyFromName(nameOrKey) {
+  if (!nameOrKey) return "charterer";
+  const str = nameOrKey.toLowerCase();
+  if (str.includes("ministry")) return "ministry";
+  if (str.includes("procurement")) return "procurement";
+  if (str.includes("port")) return "portAuthority";
+  return "charterer";
+}
+
+export function applyRoleLens(roleKeyOrName, onRoleChanged) {
+  const roleKey = getRoleKeyFromName(roleKeyOrName);
+  const cfg = ROLE_CONFIG[roleKey] || ROLE_CONFIG.charterer;
+  
+  sessionStorage.setItem("navisteel_active_lens", roleKey);
+  sessionStorage.setItem("navisteel_role", cfg.name);
+  sessionStorage.setItem("navisteel_name", cfg.defaultUser);
+
+  // Update Topbar Profile
+  const topUserName = document.getElementById("topUserName");
+  const topUserRole = document.getElementById("topUserRole");
+  const topUserAvatar = document.getElementById("topUserAvatar");
+  const dropdownUserName = document.getElementById("dropdownUserName");
+  const dropdownRoleLabel = document.getElementById("dropdownRoleLabel");
+  const dropdownClearance = document.getElementById("dropdownClearance");
+
+  if (topUserName) topUserName.innerText = cfg.defaultUser;
+  if (topUserRole) topUserRole.innerText = `● ${cfg.roleCode}`;
+  if (topUserAvatar) {
+    const initials = cfg.defaultUser.split(" ").map(n => n[0]).slice(0, 2).join("");
+    topUserAvatar.innerText = initials;
+  }
+  if (dropdownUserName) dropdownUserName.innerText = cfg.defaultUser;
+  if (dropdownRoleLabel) dropdownRoleLabel.innerText = cfg.name;
+  if (dropdownClearance) dropdownClearance.innerText = cfg.clearance;
+
+  // Update Role Switcher Buttons in Dropdown
+  document.querySelectorAll(".role-lens-btn").forEach(btn => {
+    const bRoleId = btn.getAttribute("data-role-id");
+    const checkSpan = btn.querySelector(".lens-check");
+    if (bRoleId === roleKey) {
+      btn.classList.add("active");
+      if (checkSpan) checkSpan.style.display = "inline";
+    } else {
+      btn.classList.remove("active");
+      if (checkSpan) checkSpan.style.display = "none";
+    }
+  });
+
+  // Update Hero Section
+  const heroPillBadgeText = document.getElementById("heroPillBadgeText");
+  const heroTitle = document.getElementById("heroTitle");
+  const heroSubtitle = document.getElementById("heroSubtitle");
+  const heroPrimaryCta = document.getElementById("heroPrimaryCta");
+  const heroSecondaryCta = document.getElementById("heroSecondaryCta");
+
+  if (heroPillBadgeText) heroPillBadgeText.innerText = cfg.badgeText;
+  if (heroTitle) heroTitle.innerHTML = cfg.heroTitle;
+  if (heroSubtitle) heroSubtitle.innerText = cfg.heroSubtitle;
+  if (heroPrimaryCta) {
+    heroPrimaryCta.innerText = cfg.primaryCtaText;
+    heroPrimaryCta.setAttribute("href", cfg.primaryCtaHref);
+  }
+  if (heroSecondaryCta) {
+    heroSecondaryCta.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> ${cfg.secondaryCtaText}`;
+  }
+
+  // Update Sidebar Navigation Links
+  const sidebarNavLinks = document.getElementById("sidebarNavLinks");
+  if (sidebarNavLinks && cfg.sidebarNav) {
+    sidebarNavLinks.innerHTML = cfg.sidebarNav.map((item, idx) => `
+      <a href="#${item.id}" class="sidebar-link ${idx === 0 ? 'active' : ''}">
+        ${getSidebarIconSvg(item.icon)}
+        ${item.label}
+      </a>
+    `).join("");
+  }
+
+  if (onRoleChanged) {
+    onRoleChanged(roleKey);
+  }
+}
+
+export function initAuth(onAuthSuccess, onRoleChanged) {
   const loginScreen = document.getElementById("loginScreen");
   const appLayout = document.getElementById("appLayout");
   const authOverlay = document.getElementById("authTransitionOverlay");
@@ -10,19 +93,16 @@ export function initAuth(onAuthSuccess) {
   const loginEmail = document.getElementById("loginEmail");
   const authUserName = document.getElementById("authUserName");
   const authStatusText = document.getElementById("authStatusText");
-  const topUserName = document.getElementById("topUserName");
-  const topUserRole = document.getElementById("topUserRole");
-  const topUserAvatar = document.getElementById("topUserAvatar");
-  const dropdownRoleLabel = document.getElementById("dropdownRoleLabel");
   const userProfileWrapper = document.getElementById("userProfileWrapper");
   const userDropdown = document.getElementById("userDropdown");
   const logoutBtn = document.getElementById("logoutBtn");
   const rolePills = document.querySelectorAll(".role-pill-btn");
+  const roleLensBtns = document.querySelectorAll(".role-lens-btn");
 
   let currentRole = "SAIL Charterer";
   let currentUserName = "Yash Patil";
 
-  // Role Selection
+  // Role Selection on Login Screen
   rolePills.forEach(pill => {
     pill.addEventListener("click", () => {
       rolePills.forEach(p => p.classList.remove("active"));
@@ -49,17 +129,8 @@ export function initAuth(onAuthSuccess) {
   // Enter Control Tower Procedure
   function grantAccess(isDemoDirect = false) {
     sessionStorage.setItem("navisteel_auth", "true");
-    sessionStorage.setItem("navisteel_role", currentRole);
-    sessionStorage.setItem("navisteel_name", currentUserName);
-
-    // Update Topbar Profile
-    if (topUserName) topUserName.innerText = currentUserName.split(" ")[0] + " " + currentUserName.split(" ")[1];
-    if (topUserRole) topUserRole.innerText = `● ${currentRole.toUpperCase()}`;
-    if (topUserAvatar) {
-      const initials = currentUserName.split(" ").map(n => n[0]).slice(0, 2).join("");
-      topUserAvatar.innerText = initials;
-    }
-    if (dropdownRoleLabel) dropdownRoleLabel.innerText = currentRole;
+    const roleKey = getRoleKeyFromName(currentRole);
+    applyRoleLens(roleKey, onRoleChanged);
 
     if (isDemoDirect) {
       if (loginScreen) loginScreen.style.display = "none";
@@ -154,6 +225,16 @@ export function initAuth(onAuthSuccess) {
     });
   }
 
+  // Role Lens Switcher in Profile Dropdown
+  roleLensBtns.forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const roleId = btn.getAttribute("data-role-id");
+      applyRoleLens(roleId, onRoleChanged);
+      if (userDropdown) userDropdown.style.display = "none";
+    });
+  });
+
   // Logout / Sign Out
   if (logoutBtn) {
     logoutBtn.addEventListener("click", (e) => {
@@ -161,6 +242,7 @@ export function initAuth(onAuthSuccess) {
       sessionStorage.removeItem("navisteel_auth");
       sessionStorage.removeItem("navisteel_role");
       sessionStorage.removeItem("navisteel_name");
+      sessionStorage.removeItem("navisteel_active_lens");
 
       if (userDropdown) userDropdown.style.display = "none";
       if (appLayout) appLayout.style.display = "none";
@@ -174,18 +256,8 @@ export function initAuth(onAuthSuccess) {
   // Check Existing Session
   const isAuth = sessionStorage.getItem("navisteel_auth") === "true";
   if (isAuth) {
-    const savedRole = sessionStorage.getItem("navisteel_role") || "SAIL Charterer";
-    const savedName = sessionStorage.getItem("navisteel_name") || "Yash Patil";
-    currentRole = savedRole;
-    currentUserName = savedName;
-
-    if (topUserName) topUserName.innerText = currentUserName.split(" ")[0] + " " + currentUserName.split(" ")[1];
-    if (topUserRole) topUserRole.innerText = `● ${currentRole.toUpperCase()}`;
-    if (topUserAvatar) {
-      const initials = currentUserName.split(" ").map(n => n[0]).slice(0, 2).join("");
-      topUserAvatar.innerText = initials;
-    }
-    if (dropdownRoleLabel) dropdownRoleLabel.innerText = currentRole;
+    const savedLens = sessionStorage.getItem("navisteel_active_lens") || "charterer";
+    applyRoleLens(savedLens, onRoleChanged);
 
     if (loginScreen) loginScreen.style.display = "none";
     if (appLayout) appLayout.style.display = "flex";
@@ -195,3 +267,4 @@ export function initAuth(onAuthSuccess) {
     if (appLayout) appLayout.style.display = "none";
   }
 }
+
