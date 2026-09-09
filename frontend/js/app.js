@@ -202,6 +202,7 @@ export async function executePipeline() {
     const riskRes = await API.getRiskMatrix(state.destination);
     state.risk = riskRes;
     renderRiskCard(riskRes);
+    updateDecisionPipeline(5, safetyRes.approved);
     
     // 9. Query Inter-PSU Co-Loading (Module C)
     const coloadPayload = {
@@ -239,7 +240,7 @@ export async function executePipeline() {
     renderExecutiveDecision(decisionRes);
     
     // Motion & Verdict updates
-    updateDecisionPipeline(5, safetyRes.approved);
+    updateDecisionPipeline(6, safetyRes.approved);
     triggerDecisionVerdictMotion(safetyRes.approved);
     updateNaviAiState(safetyRes.approved ? "ready" : "rejected");
     updateMaritimeMapRoute(safetyRes.approved);

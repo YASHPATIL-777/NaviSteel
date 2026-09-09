@@ -4,8 +4,23 @@
  */
 
 /* ==========================================================================
-   1. Living Ocean Canvas & Atmospheric Depth
+   1. Hero Section & Balanced 2-Column Command Center Composition
    ========================================================================== */
+.hero-section {
+  position: relative !important;
+  min-height: 460px !important;
+  max-height: 520px !important;
+  background: radial-gradient(circle at 75% 25%, #0c2b52 0%, #071933 45%, #040e1d 100%) !important;
+  color: #FFFFFF !important;
+  padding: 1.6rem 2.25rem !important;
+  overflow: hidden !important;
+  border-bottom: 1px solid rgba(56, 189, 248, 0.25) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
 .hero-ocean-canvas {
   position: absolute;
   top: 0;
@@ -14,78 +29,244 @@
   height: 100%;
   pointer-events: auto;
   z-index: 1;
-  opacity: 0.75;
-  transition: opacity 0.6s ease;
-}
-
-.hero-section:hover .hero-ocean-canvas {
-  opacity: 0.92;
+  opacity: 1;
+  transition: opacity 0.5s ease;
 }
 
 .hero-bg-overlay {
-  background: radial-gradient(circle at 80% 25%, rgba(56, 189, 248, 0.16) 0%, transparent 60%),
-              radial-gradient(circle at 15% 85%, rgba(14, 165, 233, 0.12) 0%, transparent 65%),
-              linear-gradient(180deg, #071326 0%, #0A1E3C 50%, #0F2B52 100%) !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 80% 25%, rgba(56, 189, 248, 0.22) 0%, transparent 60%),
+              radial-gradient(circle at 15% 85%, rgba(14, 165, 233, 0.16) 0%, transparent 65%),
+              linear-gradient(180deg, rgba(6, 18, 38, 0.15) 0%, rgba(10, 30, 60, 0.45) 55%, rgba(4, 14, 29, 0.95) 100%) !important;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.hero-content-grid {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: 0.92fr 1.08fr;
+  gap: 2rem;
+  align-items: center;
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.hero-text-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.hero-title {
+  font-size: 2.35rem !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.03em !important;
+  line-height: 1.12 !important;
+  color: #FFFFFF !important;
+  margin: 0 !important;
+}
+
+.hero-subtitle {
+  font-size: 0.88rem !important;
+  color: #CBD5E1 !important;
+  line-height: 1.45 !important;
+  max-width: 520px !important;
+  margin: 0 !important;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-top: 0.35rem;
+}
+
+/* Tactical Corner Crosshairs */
+.tactical-crosshair {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+  z-index: 5;
+}
+.tactical-crosshair::before, .tactical-crosshair::after {
+  content: "";
+  position: absolute;
+  background: rgba(56, 189, 248, 0.6);
+}
+.tactical-crosshair-tl { top: 6px; left: 6px; }
+.tactical-crosshair-tl::before { top: 0; left: 0; width: 8px; height: 1.5px; }
+.tactical-crosshair-tl::after { top: 0; left: 0; width: 1.5px; height: 8px; }
+
+.tactical-crosshair-tr { top: 6px; right: 6px; }
+.tactical-crosshair-tr::before { top: 0; right: 0; width: 8px; height: 1.5px; }
+.tactical-crosshair-tr::after { top: 0; right: 0; width: 1.5px; height: 8px; }
+
+.tactical-crosshair-bl { bottom: 6px; left: 6px; }
+.tactical-crosshair-bl::before { bottom: 0; left: 0; width: 8px; height: 1.5px; }
+.tactical-crosshair-bl::after { bottom: 0; left: 0; width: 1.5px; height: 8px; }
+
+.tactical-crosshair-br { bottom: 6px; right: 6px; }
+.tactical-crosshair-br::before { bottom: 0; right: 0; width: 8px; height: 1.5px; }
+.tactical-crosshair-br::after { bottom: 0; right: 0; width: 1.5px; height: 8px; }
+
+/* ==========================================================================
+   2. Dedicated East Coast Maritime Radar Command Center Display
+   ========================================================================== */
+.hero-map-wrapper {
+  background: rgba(5, 17, 36, 0.90) !important;
+  border: 1px solid rgba(56, 189, 248, 0.40) !important;
+  border-radius: 12px !important;
+  padding: 0.75rem 0.9rem !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(56, 189, 248, 0.2), inset 0 0 35px rgba(2, 132, 199, 0.16) !important;
+  position: relative !important;
+  min-height: 295px;
+}
+
+.hero-map-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hero-svg-map-container {
+  width: 100%;
+  height: 215px;
+  position: relative;
+}
+
+/* Glowing Route Lines */
+.animated-route-line {
+  stroke-dasharray: 8 4;
+  animation: routeDashFlow 22s linear infinite;
+  filter: drop-shadow(0 0 7px rgba(56, 189, 248, 0.85));
+}
+
+@keyframes routeDashFlow {
+  to { stroke-dashoffset: -1000; }
+}
+
+/* Fractured Route for Rejection (Scenario 4) */
+.route-fractured {
+  stroke: #EF4444 !important;
+  stroke-width: 3.5 !important;
+  stroke-dasharray: 10 6 !important;
+  animation: fracturedGlitch 0.9s infinite alternate !important;
+  filter: drop-shadow(0 0 12px #EF4444) !important;
+}
+
+@keyframes fracturedGlitch {
+  0% { opacity: 0.7; transform: translateX(0); }
+  50% { opacity: 1; transform: translateX(-1px); }
+  100% { opacity: 0.85; transform: translateX(1px); }
+}
+
+/* Alternate Deep-Water Diversion Route Branches */
+.route-alternate {
+  stroke: #10B981 !important;
+  stroke-width: 2.8 !important;
+  stroke-dasharray: 6 4 !important;
+  animation: altRouteGlow 1.8s ease-in-out infinite alternate !important;
+  filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.9)) !important;
+}
+
+@keyframes altRouteGlow {
+  0% { opacity: 0.6; stroke-width: 2.2; }
+  100% { opacity: 1; stroke-width: 3.2; }
+}
+
+/* Pulse Node Ring */
+.pulse-node-ring {
+  animation: nodeRadarPulse 2.4s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+  transform-origin: center;
+}
+
+@keyframes nodeRadarPulse {
+  0% { r: 5; opacity: 1; }
+  100% { r: 18; opacity: 0; }
 }
 
 /* ==========================================================================
-   2. Floating Telemetry HUD Cards (Glass-Tactical Hybrid)
+   3. Layered Floating Tactical Telemetry HUD Capsules
    ========================================================================== */
 .floating-hero-cards-row {
-  display: flex;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: 1.35fr 0.9fr 0.9fr;
+  gap: 8px;
   position: absolute;
-  bottom: 14px;
-  left: 14px;
-  right: 14px;
-  z-index: 4;
+  bottom: 8px;
+  left: 10px;
+  right: 10px;
+  z-index: 6;
 }
 
-.hero-vessel-panel, .hero-marine-panel, .hero-port-panel {
-  background: rgba(10, 25, 47, 0.78);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(56, 189, 248, 0.28);
-  border-radius: 10px;
-  padding: 8px 12px;
-  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.05);
+.hero-vessel-panel, .hero-marine-panel {
+  background: rgba(6, 18, 38, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-left: 3px solid #38BDF8;
+  border-radius: 7px;
+  padding: 5px 8px;
+  box-shadow: 0 6px 20px -3px rgba(0, 0, 0, 0.55), 0 0 12px rgba(2, 132, 199, 0.15);
   transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-  animation: floatSlow 6s ease-in-out infinite alternate;
+  animation: floatStagger 6s ease-in-out infinite alternate;
 }
 
-.hero-vessel-panel {
-  flex: 1.4;
-  animation-delay: 0s;
+.hero-vessel-panel { 
+  transform: translateY(-2px); 
+  animation-delay: 0s; 
+  z-index: 7;
 }
-
-.hero-marine-panel {
-  flex: 1;
-  animation-delay: -3s;
+.hero-marine-panel:nth-child(2) { 
+  transform: translateY(1px); 
+  animation-delay: -2s; 
+  border-left-color: #10B981; 
+  z-index: 6;
+}
+.hero-marine-panel:nth-child(3) { 
+  transform: translateY(0px); 
+  animation-delay: -4s; 
+  border-left-color: #38BDF8; 
+  z-index: 6;
 }
 
 .hero-vessel-panel:hover, .hero-marine-panel:hover {
   transform: translateY(-4px) scale(1.02);
-  border-color: rgba(56, 189, 248, 0.6);
-  box-shadow: 0 12px 30px -4px rgba(56, 189, 248, 0.25);
+  border-color: rgba(56, 189, 248, 0.7);
+  box-shadow: 0 10px 26px -3px rgba(56, 189, 248, 0.35);
 }
 
-@keyframes floatSlow {
+@keyframes floatStagger {
   0% { transform: translateY(0px); }
-  100% { transform: translateY(-4px); }
+  100% { transform: translateY(-3px); }
 }
 
-/* Mini Animated Waveform in Telemetry */
+/* Mini Sinusoidal Waveform */
 .mini-wave-anim {
   width: 100%;
-  height: 14px;
+  height: 10px;
   stroke: #38BDF8;
   stroke-width: 1.5;
   fill: none;
   overflow: visible;
+  margin-top: 2px;
 }
 
 .mini-wave-path {
-  animation: waveDrift 4s linear infinite;
+  animation: waveDrift 3.5s linear infinite;
 }
 
 @keyframes waveDrift {
@@ -98,8 +279,8 @@
   display: flex;
   gap: 3px;
   align-items: center;
-  height: 6px;
-  margin-top: 3px;
+  height: 5px;
+  margin-top: 2px;
 }
 
 .wind-streak {
@@ -110,30 +291,173 @@
 }
 
 .wind-streak:nth-child(1) { width: 14px; animation-delay: 0s; }
-.wind-streak:nth-child(2) { width: 22px; animation-delay: 0.3s; }
-.wind-streak:nth-child(3) { width: 10px; animation-delay: 0.6s; }
+.wind-streak:nth-child(2) { width: 22px; animation-delay: 0.35s; }
+.wind-streak:nth-child(3) { width: 10px; animation-delay: 0.7s; }
 
 @keyframes windStreak {
-  0% { transform: translateX(-10px); opacity: 0; }
+  0% { transform: translateX(-8px); opacity: 0; }
   50% { opacity: 1; }
-  100% { transform: translateX(20px); opacity: 0; }
+  100% { transform: translateX(24px); opacity: 0; }
 }
 
 /* ==========================================================================
-   3. 7-Stage Live Intelligence Stream
+   4. NAVI AI Hero Orbital Intelligence Core with 4 Satellites
+   ========================================================================== */
+.hero-navi-ai-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(6, 20, 42, 0.82);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  border-radius: 9999px;
+  padding: 4px 14px 4px 8px;
+  backdrop-filter: blur(16px);
+  margin-bottom: 0.4rem;
+  width: fit-content;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.navi-hero-orbital-deck {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navi-orbital-track-1 {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px dashed rgba(56, 189, 248, 0.65);
+  animation: orbitRotateClockwise 8s linear infinite;
+}
+
+.navi-orbital-track-2 {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: 1px solid rgba(2, 132, 199, 0.5);
+  border-top: 2px solid #38BDF8;
+  animation: orbitRotateCounter 5s linear infinite;
+}
+
+.navi-orbital-satellite-point {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.sat-freight {
+  top: 0; left: 50%;
+  background: #38BDF8;
+  box-shadow: 0 0 6px #38BDF8;
+}
+
+.sat-weather {
+  bottom: 0; left: 50%;
+  background: #0284C7;
+  box-shadow: 0 0 6px #0284C7;
+}
+
+.sat-vessel {
+  top: 50%; left: 0;
+  background: #10B981;
+  box-shadow: 0 0 6px #10B981;
+}
+
+.sat-risk {
+  top: 50%; right: 0;
+  background: #F59E0B;
+  box-shadow: 0 0 6px #F59E0B;
+}
+
+.navi-core-center-gem {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #38BDF8 0%, #0284C7 100%);
+  box-shadow: 0 0 10px #38BDF8, 0 0 20px rgba(2, 132, 199, 0.8);
+  animation: gemPulse 2s ease-in-out infinite alternate;
+}
+
+.orbital-sat-badges {
+  display: inline-flex;
+  gap: 3px;
+  align-items: center;
+}
+
+.sat-badge {
+  font-size: 0.52rem;
+  font-weight: 800;
+  padding: 1px 4px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.sat-freight-tag { background: rgba(56, 189, 248, 0.18); color: #38BDF8; }
+.sat-weather-tag { background: rgba(14, 165, 233, 0.18); color: #7DD3FC; }
+.sat-vessel-tag { background: rgba(16, 185, 129, 0.18); color: #34D399; }
+.sat-risk-tag { background: rgba(245, 158, 11, 0.18); color: #FCD34D; }
+
+@keyframes orbitRotateClockwise {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes orbitRotateCounter {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+@keyframes gemPulse {
+  0% { transform: scale(0.85); box-shadow: 0 0 6px #38BDF8; }
+  100% { transform: scale(1.15); box-shadow: 0 0 14px #38BDF8, 0 0 22px #0284C7; }
+}
+
+/* NAVI Core State Variants */
+.hero-navi-ai-container.state-evaluating .navi-orbital-track-1 {
+  animation-duration: 2.5s;
+  border-color: #38BDF8;
+}
+
+.hero-navi-ai-container.state-ready .navi-core-center-gem {
+  background: radial-gradient(circle, #34D399 0%, #059669 100%);
+  box-shadow: 0 0 12px #10B981, 0 0 20px rgba(16, 185, 129, 0.8);
+}
+
+.hero-navi-ai-container.state-rejected .navi-core-center-gem {
+  background: radial-gradient(circle, #F87171 0%, #DC2626 100%);
+  box-shadow: 0 0 14px #EF4444, 0 0 24px rgba(220, 38, 38, 0.8);
+  animation: alertGlitch 0.6s infinite alternate;
+}
+
+@keyframes alertGlitch {
+  0% { transform: scale(0.9); }
+  100% { transform: scale(1.2); }
+}
+
+/* ==========================================================================
+   5. Redesigned Decision Pipeline (Command Intelligence Stream)
    ========================================================================== */
 .decision-pipeline-container {
-  background: #FFFFFF;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
-  padding: 0.9rem 1.25rem;
-  margin-bottom: 1.25rem;
-  box-shadow: 0 4px 20px -2px rgba(10, 25, 47, 0.05);
-  display: flex;
-  flex-direction: column;
-  gap: 0.65rem;
-  position: relative;
-  overflow: hidden;
+  background: linear-gradient(180deg, #0A1C36 0%, #07152B 100%) !important;
+  border: 1px solid rgba(56, 189, 248, 0.25) !important;
+  border-radius: 10px !important;
+  padding: 0.7rem 1.25rem !important;
+  margin: 0.6rem 0 1rem 0 !important;
+  box-shadow: 0 6px 20px -4px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.45rem !important;
+  position: relative !important;
+  overflow: hidden !important;
 }
 
 .decision-pipeline-container::before {
@@ -141,282 +465,184 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 3px;
+  width: 4px;
   height: 100%;
-  background: linear-gradient(180deg, #0284C7, #10B981);
-}
-
-.decision-pipeline-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  background: linear-gradient(180deg, #38BDF8, #10B981);
 }
 
 .decision-pipeline-title {
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--text-navy-900);
+  letter-spacing: 0.08em;
+  color: #E2E8F0 !important;
   display: flex;
   align-items: center;
-  gap: 6px;
-}
-
-.decision-pipeline-steps {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-  padding: 0.25rem 0.5rem;
+  gap: 8px;
 }
 
 .decision-pipeline-track {
   position: absolute;
   top: 50%;
-  left: 32px;
-  right: 32px;
+  left: 36px;
+  right: 36px;
   height: 3px;
-  background: #E2E8F0;
+  background: rgba(255, 255, 255, 0.12) !important;
   transform: translateY(-50%);
   z-index: 1;
   border-radius: 2px;
-  overflow: hidden;
 }
 
 .decision-pipeline-progress {
   height: 100%;
   width: 100%;
-  background: linear-gradient(90deg, #0284C7, #38BDF8, #10B981);
+  background: linear-gradient(90deg, #0284C7, #38BDF8, #10B981) !important;
   border-radius: 2px;
   transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
 }
 
 .decision-pipeline-particle {
   position: absolute;
   right: 0;
-  top: -3.5px;
-  width: 10px;
-  height: 10px;
+  top: -4px;
+  width: 11px;
+  height: 11px;
   border-radius: 50%;
   background: #FFFFFF;
   box-shadow: 0 0 10px #38BDF8, 0 0 20px #0284C7;
   animation: particlePulse 1.2s infinite alternate;
 }
 
-@keyframes particlePulse {
-  0% { transform: scale(0.9); box-shadow: 0 0 6px #38BDF8; }
-  100% { transform: scale(1.4); box-shadow: 0 0 14px #38BDF8, 0 0 24px #0284C7; }
-}
-
 .pipeline-node {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  background: #FFFFFF;
-  padding: 0 6px;
-  cursor: default;
-  transition: transform 0.2s ease;
-}
-
-.pipeline-node:hover {
-  transform: translateY(-2px);
+  background: transparent !important;
 }
 
 .pipeline-node-icon {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: 2px solid #CBD5E1;
-  background: #FFFFFF;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.65rem;
-  font-weight: 800;
-  color: var(--text-muted);
-  transition: all 0.35s ease;
+  width: 26px !important;
+  height: 26px !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.2) !important;
+  background: #0A1C36 !important;
+  color: #94A3B8 !important;
+  font-size: 0.62rem !important;
+  font-weight: 800 !important;
 }
 
 .pipeline-node.completed .pipeline-node-icon {
-  border-color: #10B981;
-  background: #ECFDF5;
-  color: #059669;
+  border-color: #10B981 !important;
+  background: rgba(16, 185, 129, 0.2) !important;
+  color: #34D399 !important;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
 }
 
 .pipeline-node.active .pipeline-node-icon {
-  border-color: #0284C7;
-  background: #F0F9FF;
-  color: #0284C7;
-  box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.18);
+  border-color: #38BDF8 !important;
+  background: rgba(56, 189, 248, 0.2) !important;
+  color: #38BDF8 !important;
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.25), 0 0 14px rgba(56, 189, 248, 0.5);
   animation: nodeActivePulse 1.6s infinite ease-in-out;
 }
 
 .pipeline-node.rejected .pipeline-node-icon {
-  border-color: #DC2626;
-  background: #FEF2F2;
-  color: #DC2626;
-  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.25);
+  border-color: #EF4444 !important;
+  background: rgba(239, 68, 68, 0.25) !important;
+  color: #EF4444 !important;
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.35), 0 0 14px rgba(239, 68, 68, 0.6);
   animation: nodeRejectedPulse 1.2s infinite alternate;
 }
 
 .pipeline-node-label {
-  font-size: 0.65rem;
-  font-weight: 700;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
+  font-size: 0.62rem !important;
+  font-weight: 700 !important;
+  color: #94A3B8 !important;
+  letter-spacing: 0.04em !important;
 }
 
 .pipeline-node.active .pipeline-node-label {
-  color: var(--navy-primary);
-  font-weight: 800;
+  color: #38BDF8 !important;
+  font-weight: 800 !important;
+}
+
+.pipeline-node.completed .pipeline-node-label {
+  color: #34D399 !important;
 }
 
 .pipeline-node.rejected .pipeline-node-label {
-  color: #DC2626;
-  font-weight: 800;
-}
-
-@keyframes nodeActivePulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); box-shadow: 0 0 0 6px rgba(2, 132, 199, 0.28); }
-}
-
-@keyframes nodeRejectedPulse {
-  0% { transform: scale(1); box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2); }
-  100% { transform: scale(1.12); box-shadow: 0 0 0 7px rgba(220, 38, 38, 0.4); }
+  color: #EF4444 !important;
 }
 
 /* ==========================================================================
-   4. Maritime Network Map & Route Visuals
+   6. Command Telemetry KPI Ribbon
    ========================================================================== */
-.route-main-line {
-  stroke-dasharray: 6 3;
-  animation: routeDash 18s linear infinite;
+.kpi-strip {
+  background: #FFFFFF !important;
+  border-radius: 10px !important;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: 0 4px 16px -2px rgba(10, 25, 47, 0.06) !important;
+  padding: 0.6rem 0.85rem !important;
+  margin-bottom: 1rem !important;
 }
 
-@keyframes routeDash {
-  to { stroke-dashoffset: -1000; }
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.5rem;
 }
 
-/* Fractured Route for Rejection (Scenario 4) */
-.route-fractured {
-  stroke: #EF4444 !important;
-  stroke-width: 3 !important;
-  stroke-dasharray: 8 6 !important;
-  animation: fracturedGlitch 1s infinite alternate !important;
+.kpi-card {
+  padding: 0.45rem 0.75rem !important;
+  background: var(--bg-surface-subtle) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 8px !important;
+  transition: all 0.2s ease !important;
 }
 
-@keyframes fracturedGlitch {
-  0% { opacity: 0.7; filter: drop-shadow(0 0 3px #EF4444); }
-  100% { opacity: 1; filter: drop-shadow(0 0 10px #EF4444); }
+.kpi-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent-primary);
 }
 
-/* Alternate Deep-Water Diversion Route */
-.route-alternate {
-  stroke: #10B981 !important;
-  stroke-width: 2.2 !important;
-  stroke-dasharray: 4 4 !important;
-  animation: altRouteGlow 2s ease-in-out infinite alternate;
+.kpi-card:nth-child(4) {
+  /* Prominent Annual Savings Focus */
+  background: linear-gradient(135deg, #ECFDF5 0%, #F0FDF4 100%) !important;
+  border: 1px solid #A7F3D0 !important;
+  box-shadow: 0 4px 12px -2px rgba(16, 185, 129, 0.15) !important;
 }
 
-@keyframes altRouteGlow {
-  0% { filter: drop-shadow(0 0 2px #10B981); opacity: 0.6; }
-  100% { filter: drop-shadow(0 0 8px #10B981); opacity: 1; }
-}
-
-/* ==========================================================================
-   5. NAVI AI Orbital Core
-   ========================================================================== */
-.navi-ai-orbital-core {
-  position: relative;
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.orbital-ring {
-  position: absolute;
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-.orbital-ring-1 {
-  width: 38px;
-  height: 38px;
-  border: 1.5px dashed rgba(56, 189, 248, 0.6);
-  animation: orbitClockwise 8s linear infinite;
-}
-
-.orbital-ring-2 {
-  width: 28px;
-  height: 28px;
-  border: 1px solid rgba(2, 132, 199, 0.4);
-  border-top: 2px solid #38BDF8;
-  animation: orbitCounter 5s linear infinite;
-}
-
-.orbital-center-gem {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: radial-gradient(circle, #38BDF8 0%, #0284C7 100%);
-  box-shadow: 0 0 10px #38BDF8, 0 0 18px rgba(2, 132, 199, 0.8);
-  animation: gemGlow 2s ease-in-out infinite alternate;
-}
-
-@keyframes orbitClockwise {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-@keyframes orbitCounter {
-  from { transform: rotate(360deg); }
-  to { transform: rotate(0deg); }
-}
-
-@keyframes gemGlow {
-  0% { transform: scale(0.85); filter: drop-shadow(0 0 3px #38BDF8); }
-  100% { transform: scale(1.15); filter: drop-shadow(0 0 10px #38BDF8); }
+.kpi-card:nth-child(4) .kpi-value {
+  color: #059669 !important;
+  font-weight: 900 !important;
 }
 
 /* ==========================================================================
-   6. Command-Center GO / NO-GO Verdict System
+   7. Command-Center GO / NO-GO Verdict Systems
    ========================================================================== */
 .directive-card.decision-go-active {
   border-color: #10B981 !important;
-  box-shadow: 0 10px 35px -5px rgba(16, 185, 129, 0.28), 0 0 0 1px rgba(16, 185, 129, 0.35) !important;
+  box-shadow: 0 12px 40px -6px rgba(16, 185, 129, 0.32), 0 0 0 1px rgba(16, 185, 129, 0.4) !important;
   animation: goRadialGlow 2.5s ease-out;
 }
 
 @keyframes goRadialGlow {
-  0% { transform: translateY(0); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
-  50% { transform: translateY(-3px); box-shadow: 0 0 0 18px rgba(16, 185, 129, 0); }
-  100% { transform: translateY(0); box-shadow: 0 10px 35px -5px rgba(16, 185, 129, 0.28); }
+  0% { transform: translateY(0); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  50% { transform: translateY(-3px); box-shadow: 0 0 0 20px rgba(16, 185, 129, 0); }
+  100% { transform: translateY(0); box-shadow: 0 12px 40px -6px rgba(16, 185, 129, 0.32); }
 }
 
 .directive-card.decision-nogo-active {
   border-color: #DC2626 !important;
-  box-shadow: 0 10px 35px -5px rgba(220, 38, 38, 0.35), 0 0 0 1px rgba(220, 38, 38, 0.45) !important;
+  box-shadow: 0 12px 40px -6px rgba(220, 38, 38, 0.4), 0 0 0 1px rgba(220, 38, 38, 0.5) !important;
   animation: nogoFracturePulse 1.8s ease-in-out;
 }
 
 @keyframes nogoFracturePulse {
   0%, 100% { transform: translateX(0); }
-  20%, 60% { transform: translateX(-5px); }
-  40%, 80% { transform: translateX(5px); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
 }
 
-/* ==========================================================================
-   7. Counterfactual Value Creation Reveal
-   ========================================================================== */
+/* Counterfactual Reveal */
 .counterfactual-strip {
   background: linear-gradient(135deg, #F8FAFC 0%, #EFF6FF 100%);
   border: 1px dashed #BFDBFE;
@@ -427,95 +653,15 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
-  transition: all 0.3s ease;
-}
-
-.counterfactual-strip:hover {
-  background: linear-gradient(135deg, #FFFFFF 0%, #F0F9FF 100%);
-  border-color: #60A5FA;
-  box-shadow: 0 6px 18px -3px rgba(37, 99, 235, 0.08);
-}
-
-.counterfactual-col {
-  display: flex;
-  flex-direction: column;
-}
-
-.counterfactual-tag {
-  font-size: 0.62rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
-.counterfactual-val {
-  font-family: var(--font-mono);
-  font-size: 1.1rem;
-  font-weight: 800;
-}
-
-.counterfactual-arrow {
-  font-size: 1.1rem;
-  color: #94A3B8;
-  font-weight: 900;
 }
 
 /* ==========================================================================
-   8. Scenario Wave Sweep & Card Sheen
-   ========================================================================== */
-.scenario-wave-sweep {
-  animation: oceanWaveSweep 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-@keyframes oceanWaveSweep {
-  0% { opacity: 0.35; transform: translateY(6px) scale(0.995); filter: blur(2px); }
-  100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
-}
-
-.glass-card, .kpi-card, .gatekeeper-card, .vessel-card, .forecast-card {
-  position: relative;
-  overflow: hidden;
-  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.22s ease;
-}
-
-.glass-card:hover, .kpi-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 28px -4px rgba(10, 25, 47, 0.09), 0 4px 8px -2px rgba(10, 25, 47, 0.04);
-}
-
-.glass-card::after, .kpi-card::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -120%;
-  width: 60%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
-  transform: skewX(-20deg);
-  pointer-events: none;
-  transition: left 0.75s ease;
-}
-
-.glass-card:hover::after, .kpi-card:hover::after {
-  left: 180%;
-}
-
-/* ==========================================================================
-   9. Reduced Motion Accessibility
+   8. Reduced Motion Compliance
    ========================================================================== */
 @media (prefers-reduced-motion: reduce) {
-  .hero-ocean-canvas,
-  .orbital-ring-1,
-  .orbital-ring-2,
-  .orbital-center-gem,
-  .decision-pipeline-particle,
-  .directive-card.decision-go-active,
-  .directive-card.decision-nogo-active,
-  .scenario-wave-sweep,
-  .hero-vessel-panel,
-  .hero-marine-panel {
-    animation: none !important;
-    transition: none !important;
-    transform: none !important;
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
