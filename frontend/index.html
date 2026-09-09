@@ -8,9 +8,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <!-- Stylesheet -->
+  <!-- Stylesheets -->
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/motion.css">
 </head>
+
 <body>
 
   <!-- ==========================================================================
@@ -331,7 +333,9 @@
 
       <!-- Cinematic Maritime Hero Section -->
       <section class="hero-section" id="heroSection">
+        <canvas id="oceanCanvas" class="hero-ocean-canvas"></canvas>
         <div class="hero-bg-overlay"></div>
+
         <div class="hero-content-grid">
           
           <div class="hero-text-block">
@@ -373,7 +377,7 @@
                 <span class="pulse-dot"></span>
                 <span style="font-size: 0.75rem; font-weight: 800; color: #FFFFFF; letter-spacing: 0.04em;">EAST COAST MARITIME CORRIDOR RADAR</span>
               </div>
-              <span class="live-badge" style="padding: 2px 8px; font-size: 0.65rem;">LIVE ROUTE TRACK</span>
+              <span id="heroMapStatusBadge" class="live-badge" style="padding: 2px 8px; font-size: 0.65rem;">LIVE ROUTE TRACK</span>
             </div>
 
             <!-- SVG Animated East Coast India to Australia Corridor Map -->
@@ -381,38 +385,60 @@
               <svg width="100%" height="100%" viewBox="0 0 540 190" style="overflow: visible;">
                 <defs>
                   <linearGradient id="routeGlow" x1="1" y1="1" x2="0" y2="0">
-                    <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.9"/>
-                    <stop offset="100%" stop-color="#0284C7" stop-opacity="0.3"/>
+                    <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.95"/>
+                    <stop offset="100%" stop-color="#0284C7" stop-opacity="0.35"/>
+                  </linearGradient>
+                  <linearGradient id="radarSweepGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#38BDF8" stop-opacity="0"/>
+                    <stop offset="70%" stop-color="#38BDF8" stop-opacity="0.08"/>
+                    <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.35"/>
                   </linearGradient>
                 </defs>
 
+                <!-- Oceanic Radar Grid Lines -->
+                <line x1="20" y1="45" x2="520" y2="45" stroke="rgba(255,255,255,0.04)" stroke-dasharray="3 6"/>
+                <line x1="20" y1="95" x2="520" y2="95" stroke="rgba(255,255,255,0.04)" stroke-dasharray="3 6"/>
+                <line x1="20" y1="145" x2="520" y2="145" stroke="rgba(255,255,255,0.04)" stroke-dasharray="3 6"/>
+                <line x1="140" y1="20" x2="140" y2="180" stroke="rgba(255,255,255,0.04)" stroke-dasharray="3 6"/>
+                <line x1="280" y1="20" x2="280" y2="180" stroke="rgba(255,255,255,0.04)" stroke-dasharray="3 6"/>
+                <line x1="420" y1="20" x2="420" y2="180" stroke="rgba(255,255,255,0.04)" stroke-dasharray="3 6"/>
+
+                <!-- Rotating Radar Sweep Beam -->
+                <g transform="translate(270, 95)">
+                  <line x1="0" y1="0" x2="260" y2="0" stroke="url(#radarSweepGrad)" stroke-width="3" opacity="0.45">
+                    <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="14s" repeatCount="indefinite"/>
+                  </line>
+                </g>
+
                 <!-- India East Coast Outline Representation -->
-                <path d="M 60,10 Q 80,45 85,80 Q 95,120 110,150 Q 130,175 145,185" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="2.5"/>
+                <path d="M 60,10 Q 80,45 85,80 Q 95,120 110,150 Q 130,175 145,185" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="2.5"/>
                 <text x="50" y="25" fill="#64748B" font-size="8" font-family="sans-serif" font-weight="700">INDIA EAST COAST</text>
 
                 <!-- Major Port Nodes on East Coast -->
                 <!-- Haldia -->
                 <circle cx="82" cy="35" r="3.5" fill="#38BDF8"/>
                 <circle cx="82" cy="35" r="7" fill="none" stroke="#38BDF8" class="pulse-node-ring"/>
-                <text x="44" y="38" fill="#E2E8F0" font-size="8.5" font-family="sans-serif" font-weight="700">Haldia</text>
+                <text x="44" y="38" fill="#E2E8F0" font-size="8.5" font-family="sans-serif" font-weight="700">Haldia (12.5m)</text>
 
                 <!-- Dhamra -->
-                <circle cx="85" cy="65" r="4" fill="#10B981"/>
-                <circle cx="85" cy="65" r="8" fill="none" stroke="#10B981" class="pulse-node-ring"/>
-                <text x="38" y="68" fill="#A7F3D0" font-size="8.5" font-family="sans-serif" font-weight="800">Dhamra (18m)</text>
+                <circle id="nodeDhamra" cx="85" cy="65" r="4.5" fill="#10B981"/>
+                <circle cx="85" cy="65" r="8.5" fill="none" stroke="#10B981" class="pulse-node-ring"/>
+                <text x="34" y="68" fill="#A7F3D0" font-size="8.5" font-family="sans-serif" font-weight="800">Dhamra (18.0m)</text>
 
                 <!-- Paradip (Active Destination) -->
-                <circle cx="88" cy="95" r="5" fill="#38BDF8"/>
-                <circle cx="88" cy="95" r="10" fill="none" stroke="#38BDF8" class="pulse-node-ring"/>
-                <text x="35" y="98" fill="#FFFFFF" font-size="9" font-family="sans-serif" font-weight="900">★ Paradip</text>
+                <circle id="nodeParadip" cx="88" cy="95" r="5.5" fill="#38BDF8"/>
+                <circle cx="88" cy="95" r="11" fill="none" stroke="#38BDF8" class="pulse-node-ring"/>
+                <text x="30" y="98" fill="#FFFFFF" font-size="9" font-family="sans-serif" font-weight="900">★ Paradip (17.1m)</text>
 
                 <!-- Visakhapatnam (Vizag) -->
-                <circle cx="102" cy="130" r="3.5" fill="#F59E0B"/>
-                <text x="58" y="133" fill="#E2E8F0" font-size="8.5" font-family="sans-serif" font-weight="700">Vizag (14.5m)</text>
+                <circle id="nodeVizag" cx="102" cy="130" r="4" fill="#F59E0B"/>
+                <circle cx="102" cy="130" r="8" fill="none" stroke="#F59E0B" class="pulse-node-ring"/>
+                <text x="50" y="133" fill="#E2E8F0" font-size="8.5" font-family="sans-serif" font-weight="700">Vizag (14.5m)</text>
 
                 <!-- Gangavaram -->
-                <circle cx="110" cy="150" r="3.5" fill="#38BDF8"/>
-                <text x="48" y="153" fill="#E2E8F0" font-size="8.5" font-family="sans-serif" font-weight="700">Gangavaram</text>
+                <circle id="nodeGangavaram" cx="110" cy="150" r="4" fill="#10B981"/>
+                <circle cx="110" cy="150" r="8" fill="none" stroke="#10B981" class="pulse-node-ring"/>
+                <text x="40" y="153" fill="#A7F3D0" font-size="8.5" font-family="sans-serif" font-weight="700">Gangavaram (18.5m)</text>
 
                 <!-- Origin: Australia (Gladstone / Hay Point) -->
                 <path d="M 440,140 Q 480,135 510,165" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="2.5"/>
@@ -421,17 +447,29 @@
                 <text x="400" y="135" fill="#FDE68A" font-size="8.5" font-family="sans-serif" font-weight="800">Hay Point / Gladstone</text>
                 <text x="440" y="165" fill="#94A3B8" font-size="8" font-family="sans-serif">AUSTRALIA</text>
 
-                <!-- Animated Shipping Route Curve -->
-                <path id="oceanVoyageRoute" d="M 460,145 Q 310,165 210,125 Q 140,105 88,95" fill="none" stroke="url(#routeGlow)" stroke-width="2.5" class="animated-route-line"/>
+                <!-- 1. Normal Animated Shipping Route Curve (Scenario 1 & 3 GO) -->
+                <path id="oceanVoyageRoute" d="M 460,145 Q 310,165 210,125 Q 140,105 88,95" fill="none" stroke="url(#routeGlow)" stroke-width="2.8" class="animated-route-line"/>
 
-                <!-- Moving Vessel Marker along Voyage Route (Simulated) -->
+                <!-- 2. Fractured Voyage Route (Scenario 4 Rejection - Vizag 14.5m) -->
+                <path id="fracturedVoyageRoute" d="M 460,145 Q 310,165 210,125 Q 160,130 102,130" fill="none" stroke="#EF4444" stroke-width="3" stroke-dasharray="8 6" style="display: none;" class="route-fractured"/>
+
+                <!-- 3. Alternate Deep-Water Diversion Route Branches (to Gangavaram 18.5m & Dhamra 18.0m) -->
+                <path id="altRouteGangavaram" d="M 210,125 Q 160,140 110,150" fill="none" stroke="#10B981" stroke-width="2.5" stroke-dasharray="5 4" style="display: none;" class="route-alternate"/>
+                <path id="altRouteDhamra" d="M 210,125 Q 150,90 85,65" fill="none" stroke="#10B981" stroke-width="2.5" stroke-dasharray="5 4" style="display: none;" class="route-alternate"/>
+
+                <!-- Moving Vessel Marker & Wake Trail along Voyage Route (Simulated) -->
                 <g id="simulatedAisMarker">
-                  <circle r="4" fill="#38BDF8">
+                  <circle r="4.5" fill="#38BDF8">
+                    <animateMotion id="vesselAnimMotion" dur="14s" repeatCount="indefinite" rotate="auto">
+                      <mpath href="#oceanVoyageRoute"/>
+                    </animateMotion>
+                  </circle>
+                  <circle r="9" fill="none" stroke="#38BDF8" stroke-width="1.5" opacity="0.6">
                     <animateMotion dur="14s" repeatCount="indefinite" rotate="auto">
                       <mpath href="#oceanVoyageRoute"/>
                     </animateMotion>
                   </circle>
-                  <circle r="8" fill="none" stroke="#38BDF8" stroke-width="1.5" opacity="0.6">
+                  <circle r="14" fill="none" stroke="#38BDF8" stroke-width="1" opacity="0.25">
                     <animateMotion dur="14s" repeatCount="indefinite" rotate="auto">
                       <mpath href="#oceanVoyageRoute"/>
                     </animateMotion>
@@ -440,18 +478,28 @@
 
                 <!-- Static Live Vessel Marker (Live AIS Coordinates) -->
                 <g id="liveAisMarker" style="display: none;">
-                  <circle id="liveAisPin" cx="210" cy="125" r="5" fill="#10B981"/>
-                  <circle id="liveAisPulse" cx="210" cy="125" r="10" fill="none" stroke="#10B981" class="pulse-node-ring"/>
+                  <circle id="liveAisPin" cx="210" cy="125" r="5.5" fill="#10B981"/>
+                  <circle id="liveAisPulse" cx="210" cy="125" r="11" fill="none" stroke="#10B981" class="pulse-node-ring"/>
                   <text id="liveAisLabel" x="220" y="128" fill="#6EE7B7" font-size="8" font-family="sans-serif" font-weight="700">LIVE AIS FIX</text>
                 </g>
               </svg>
             </div>
 
-            <!-- Synchronized Vessel & Live MetOcean Panels -->
+            <!-- Synchronized Vessel & Live MetOcean Tactical HUD Panels -->
             <div class="floating-hero-cards-row">
+              <!-- Vessel Status Card -->
               <div class="hero-vessel-panel">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px;">
-                  <span id="heroVesselName" style="font-weight: 800; font-size: 0.82rem; color: #FFFFFF;">MV Ocean Pioneer</span>
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2.2">
+                      <path d="M2 21c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1 .6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/>
+                      <path d="M19.38 20A11.6 11.6 0 0 0 21 14l-9-4-9 4c0 2.9.94 5.34 2.81 7"/>
+                      <path d="M19 13V7a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v6"/>
+                      <path d="M12 10v4"/>
+                      <path d="M12 2v3"/>
+                    </svg>
+                    <span id="heroVesselName" style="font-weight: 800; font-size: 0.82rem; color: #FFFFFF;">MV Ocean Pioneer</span>
+                  </div>
                   <div style="display: flex; gap: 4px; align-items: center;">
                     <span id="heroAisBadge" class="badge" style="font-size: 0.58rem; padding: 1px 5px; background: rgba(56, 189, 248, 0.15); color: #38BDF8; border: 1px solid rgba(56, 189, 248, 0.3);">DEMO AIS</span>
                     <span id="heroVesselStatus" class="badge badge-success" style="font-size: 0.62rem; padding: 2px 6px;">IN TRANSIT</span>
@@ -464,14 +512,38 @@
                 </div>
               </div>
 
-
+              <!-- Live Wave Swell HUD Card -->
               <div class="hero-marine-panel">
-                <div style="font-size: 0.65rem; color: #94A3B8; text-transform: uppercase; font-weight: 700;">Marine Sync (Open-Meteo)</div>
-                <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 2px;">
-                  <span style="font-family: var(--font-mono); font-size: 1.1rem; font-weight: 800; color: #FFFFFF;">1.4m</span>
-                  <span style="font-size: 0.68rem; color: #34D399; font-weight: 700;">Safe Swell</span>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span style="font-size: 0.62rem; color: #94A3B8; text-transform: uppercase; font-weight: 700;">Live Swell (Open-Meteo)</span>
+                  <span style="font-size: 0.62rem; color: #34D399; font-weight: 700;">SAFE</span>
                 </div>
-                <div style="font-size: 0.65rem; color: #94A3B8;">Wind: <strong style="color: #FFFFFF;">24.8 km/h</strong></div>
+                <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 2px;">
+                  <span id="heroWaveHeight" style="font-family: var(--font-mono); font-size: 1.05rem; font-weight: 800; color: #FFFFFF;">1.4m</span>
+                  <span style="font-size: 0.65rem; color: #94A3B8;">Max 2.5m Berth</span>
+                </div>
+                <!-- Mini Sinusoidal Wave SVG -->
+                <svg class="mini-wave-anim" viewBox="0 0 100 12">
+                  <path class="mini-wave-path" d="M 0,6 Q 10,0 20,6 T 40,6 T 60,6 T 80,6 T 100,6 T 120,6 T 140,6" />
+                </svg>
+              </div>
+
+              <!-- Live Wind Stream HUD Card -->
+              <div class="hero-marine-panel">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span style="font-size: 0.62rem; color: #94A3B8; text-transform: uppercase; font-weight: 700;">Corridor Wind</span>
+                  <span style="font-size: 0.62rem; color: #38BDF8; font-weight: 700;">ENE 65°</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 2px;">
+                  <span id="heroWindSpeed" style="font-family: var(--font-mono); font-size: 1.05rem; font-weight: 800; color: #FFFFFF;">24.8 <span style="font-size: 0.7rem; font-weight: 600;">km/h</span></span>
+                  <span style="font-size: 0.65rem; color: #34D399;">Calm Gale &lt;40</span>
+                </div>
+                <!-- Mini Wind Velocity Streams -->
+                <div class="mini-wind-stream">
+                  <div class="wind-streak"></div>
+                  <div class="wind-streak"></div>
+                  <div class="wind-streak"></div>
+                </div>
               </div>
             </div>
 
@@ -558,8 +630,58 @@
       <!-- Main Dashboard Container -->
       <main class="main-container">
 
+        <!-- Live Decision-Making Pipeline Stream -->
+        <section class="decision-pipeline-container" id="pipelineSection">
+          <div class="decision-pipeline-header">
+            <div class="decision-pipeline-title">
+              <span class="pulse-dot"></span>
+              <span>LIVE MARITIME PROCUREMENT DECISION PIPELINE</span>
+            </div>
+            <span class="live-badge" style="font-size: 0.62rem; padding: 2px 7px;" id="pipelineStatusBadge">PIPELINE SYNCHRONIZED</span>
+          </div>
+
+          <div class="decision-pipeline-steps">
+            <div class="decision-pipeline-track">
+              <div class="decision-pipeline-progress" id="pipelineProgressBar" style="width: 100%;">
+                <div class="decision-pipeline-particle"></div>
+              </div>
+            </div>
+
+            <div class="pipeline-node completed" data-step="0">
+              <div class="pipeline-node-icon">01</div>
+              <span class="pipeline-node-label">INPUT</span>
+            </div>
+
+            <div class="pipeline-node completed" data-step="1">
+              <div class="pipeline-node-icon">02</div>
+              <span class="pipeline-node-label">SAFETY</span>
+            </div>
+
+            <div class="pipeline-node completed" data-step="2">
+              <div class="pipeline-node-icon">03</div>
+              <span class="pipeline-node-label">FORECAST</span>
+            </div>
+
+            <div class="pipeline-node completed" data-step="3">
+              <div class="pipeline-node-icon">04</div>
+              <span class="pipeline-node-label">VESSEL</span>
+            </div>
+
+            <div class="pipeline-node completed" data-step="4">
+              <div class="pipeline-node-icon">05</div>
+              <span class="pipeline-node-label">CONTRACT</span>
+            </div>
+
+            <div class="pipeline-node completed" data-step="5">
+              <div class="pipeline-node-icon">06</div>
+              <span class="pipeline-node-label">DECISION</span>
+            </div>
+          </div>
+        </section>
+
         <!-- Scenario Suite Selection Bar -->
         <section class="scenario-bar">
+
           <div class="scenario-header">
             <span class="scenario-title">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1031,6 +1153,24 @@
               <div class="exec-item-value" id="execActiveAlertVal" style="color: #D97706; font-size: 0.95rem;">POST-MONSOON BERTH CONGESTION ADVISORY</div>
             </div>
           </div>
+
+          <!-- Counterfactual Value Creation Reveal -->
+          <div class="counterfactual-strip" id="execCounterfactualStrip">
+            <div class="counterfactual-col">
+              <span class="counterfactual-tag">WITHOUT NAVISTEEL (SPOT)</span>
+              <span class="counterfactual-val" style="color: #DC2626;" id="cfWithoutVal">$9.54M Spend</span>
+            </div>
+            <span class="counterfactual-arrow">➔</span>
+            <div class="counterfactual-col">
+              <span class="counterfactual-tag">WITH NAVISTEEL (OPTIMIZED)</span>
+              <span class="counterfactual-val" style="color: #0284C7;" id="cfWithVal">$8.18M COA</span>
+            </div>
+            <span class="counterfactual-arrow">➔</span>
+            <div class="counterfactual-col">
+              <span class="counterfactual-tag">VALUE UNLOCKED</span>
+              <span class="counterfactual-val" style="color: #059669;" id="cfDeltaVal">+$1.36M Savings</span>
+            </div>
+          </div>
           
           <div id="execReasonsContainer" class="exec-reasons">
             <div class="exec-reasons-title">AUDITABLE AI RATIONALE & CLEARANCE PROOF:</div>
@@ -1105,12 +1245,20 @@
 
   <div class="navi-ai-panel" id="naviAiPanel">
     <div class="navi-ai-header">
-      <div style="display: flex; align-items: center; gap: 8px;">
-        <span style="width: 8px; height: 8px; border-radius: 50%; background: #10B981;"></span>
-        <span style="font-weight: 800; font-size: 0.85rem;">NAVI AI Procurement Advisor</span>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <div class="navi-ai-orbital-core">
+          <div class="orbital-ring orbital-ring-1"></div>
+          <div class="orbital-ring orbital-ring-2"></div>
+          <div class="orbital-center-gem"></div>
+        </div>
+        <div>
+          <div style="font-weight: 800; font-size: 0.85rem; color: #FFFFFF;">NAVI AI Procurement Advisor</div>
+          <div style="font-size: 0.65rem; color: #38BDF8;">Active Reasoning Core // SIH26006</div>
+        </div>
       </div>
       <button class="close-btn" id="closeNaviAiBtn" style="color: #94A3B8; font-size: 1.2rem;">&times;</button>
     </div>
+
     <div class="navi-ai-body">
       <div style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">
         I have analyzed current spot rates, monsoonal weather risks, and PSU coordination schedules. Here are 3 immediate optimization actions:

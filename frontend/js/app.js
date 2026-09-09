@@ -12,6 +12,14 @@ import { renderRiskCard, showRiskModal } from './riskPlanner.js';
 import { renderColoadCard, showColoadModal } from './coLoading.js';
 import { renderExecutiveDecision } from './executiveDecision.js';
 import { initAuth, applyRoleLens } from './auth.js';
+import { 
+  initLivingOcean, 
+  animateCounter, 
+  updateDecisionPipeline, 
+  triggerScenarioSweep, 
+  triggerDecisionVerdictMotion, 
+  updateNaviAiState 
+} from './motion.js';
 
 
 // Application State Store
@@ -62,25 +70,27 @@ function playTone(freq, type = "sine", duration = 0.2, delay = 0) {
     osc.start(audioCtx.currentTime + delay);
     osc.stop(audioCtx.currentTime + delay + duration);
   } catch (e) {
-    // Ignore autoplay limitations
+    // Gracefully ignore audio autoplay constraints
   }
 }
 
-function playSuccessChime() {
-  playTone(523.25, "sine", 0.15, 0);
-  playTone(659.25, "sine", 0.15, 0.12);
-  playTone(783.99, "sine", 0.3, 0.24);
+export function playSuccessChime() {
+  playTone(523.25, "sine", 0.15, 0);       // C5
+  playTone(659.25, "sine", 0.2, 0.08);     // E5
+  playTone(783.99, "sine", 0.35, 0.16);    // G5
 }
 
-function playRejectionSiren() {
-  playTone(440, "sawtooth", 0.2, 0);
-  playTone(330, "sawtooth", 0.25, 0.18);
-  playTone(220, "sawtooth", 0.35, 0.35);
+export function playRejectionSiren() {
+  playTone(330, "sawtooth", 0.25, 0);      // E4
+  playTone(277.18, "sawtooth", 0.35, 0.2); // C#4
 }
 
 // Master Execution Flow
 export async function executePipeline() {
   try {
+    updateNaviAiState("evaluating");
+    updateDecisionPipeline(0, true);
+
     // 1. Check Safety Gate (Gate 1)
     const safetyPayload = {
       origin: state.origin,
@@ -100,9 +110,15 @@ export async function executePipeline() {
       showRejectionModal(data);
     });
     
-    if (!safetyRes.approved && state.currentScenario === 4) {
-      playRejectionSiren();
-      showRejectionModal(safetyRes);
+    if (!safetyRes.approved) {
+      updateDecisionPipeline(1, false);
+      updateNaviAiState("rejected");
+      if (state.currentScenario === 4) {
+        playRejectionSiren();
+        showRejectionModal(safetyRes);
+      }
+    } else {
+      updateDecisionPipeline(1, true);
     }
     
     // 2. Query Freight Forecast
@@ -116,6 +132,7 @@ export async function executePipeline() {
     const forecastRes = await API.getForecast(forecastPayload);
     state.forecast = forecastRes;
     renderFreightForecast(forecastRes);
+    updateDecisionPipeline(2, safetyRes.approved);
     
     // 3. Query Vessel Optimizer
     const vesselPayload = {
@@ -129,6 +146,7 @@ export async function executePipeline() {
     const vesselRes = await API.optimizeVessels(vesselPayload);
     state.vessels = vesselRes;
     renderVesselOptimization(vesselRes);
+    updateDecisionPipeline(3, safetyRes.approved);
     
     // 4. Query Multiple-Voyage Contract Planner
     const contractPayload = {
@@ -143,6 +161,7 @@ export async function executePipeline() {
     const contractRes = await API.planContracts(contractPayload);
     state.contracts = contractRes;
     renderContractPlanner(contractRes);
+    updateDecisionPipeline(4, safetyRes.approved);
     
     // 5. Query Early Warning / Disruption Alert Center
     const alertPayload = {
@@ -219,6 +238,33 @@ export async function executePipeline() {
     state.decision = decisionRes;
     renderExecutiveDecision(decisionRes);
     
+    // Motion & Verdict updates
+    updateDecisionPipeline(5, safetyRes.approved);
+    triggerDecisionVerdictMotion(safetyRes.approved);
+    updateNaviAiState(safetyRes.approved ? "ready" : "rejected");
+    updateMaritimeMapRoute(safetyRes.approved);
+
+    // Counterfactual Value Creation Reveal update
+    const cfWithout = document.getElementById("cfWithoutVal");
+    const cfWith = document.getElementById("cfWithVal");
+    const cfDelta = document.getElementById("cfDeltaVal");
+    if (cfWithout && cfWith && cfDelta) {
+      if (!safetyRes.approved) {
+        cfWithout.innerText = "UNSAFE OPERATION";
+        cfWith.innerText = "DISCHARGE PROHIBITED";
+        cfDelta.innerText = "REVISE TO DHAMRA/GANGAVARAM";
+      } else if (contractRes.options && contractRes.options.length > 0) {
+        const spotOpt = contractRes.options.find(o => o.strategy_key === "spot") || contractRes.options[0];
+        const recOpt = contractRes.options.find(o => o.is_recommended) || contractRes.options[1] || spotOpt;
+        const spotSpend = spotOpt.total_freight_spend_usd / 1e6;
+        const optSpend = recOpt.total_freight_spend_usd / 1e6;
+        const savings = contractRes.annual_savings_vs_spot / 1e6;
+        cfWithout.innerText = `$${spotSpend.toFixed(2)}M Spend`;
+        cfWith.innerText = `$${optSpend.toFixed(2)}M ${recOpt.strategy_key === 'spot' ? 'Spot' : 'COA'}`;
+        cfDelta.innerText = `+$${savings.toFixed(2)}M Savings`;
+      }
+    }
+
     // 11. Sync Top KPI Strip with Active Role Lens & Scenario Results
     const activeLens = sessionStorage.getItem("navisteel_active_lens") || "charterer";
     renderRoleKPIs(activeLens);
@@ -289,14 +335,14 @@ export function renderRoleKPIs(roleKey = "charterer") {
         subVal = "MT CO₂ Avoided";
       }
     } else if (kpi.key === "riskStatus") {
-      if (state.safety && !state.safety.approved) {
-        displayVal = "98 / 100";
-        colorVal = "#DC2626";
-        subVal = "Critical";
-      } else if (state.alerts) {
+      if (state.alerts) {
         displayVal = `${state.alerts.composite_risk_score} / 100`;
         colorVal = state.alerts.composite_risk_score > 60 ? "#D97706" : "#059669";
         subVal = state.alerts.risk_level === "HIGH" ? "Watch Level" : "Normal Level";
+      } else if (state.safety && !state.safety.approved) {
+        displayVal = "98 / 100";
+        colorVal = "#DC2626";
+        subVal = "Critical";
       }
     } else if (kpi.key === "supplyResilience") {
       displayVal = "94.8%";
@@ -410,6 +456,50 @@ export async function syncAISVesselTelemetry(scenarioId = 1) {
   }
 }
 
+// Update Maritime SVG Map Route (Normal vs Fractured with Alternate Deep-Water Diversions)
+export function updateMaritimeMapRoute(isApproved) {
+  const oceanRoute = document.getElementById("oceanVoyageRoute");
+  const fracturedRoute = document.getElementById("fracturedVoyageRoute");
+  const altDhamra = document.getElementById("altRouteDhamra");
+  const altGangavaram = document.getElementById("altRouteGangavaram");
+  const statusBadge = document.getElementById("heroMapStatusBadge");
+  const simMarker = document.getElementById("simulatedAisMarker");
+
+  if (isApproved) {
+    if (oceanRoute) oceanRoute.style.display = "inline";
+    if (fracturedRoute) fracturedRoute.style.display = "none";
+    if (altDhamra) altDhamra.style.display = "none";
+    if (altGangavaram) altGangavaram.style.display = "none";
+    if (statusBadge) {
+      statusBadge.innerText = "LIVE ROUTE TRACK";
+      statusBadge.style.background = "";
+      statusBadge.style.color = "";
+      statusBadge.style.borderColor = "";
+    }
+    if (simMarker) {
+      simMarker.style.display = "inline";
+      const circ = simMarker.querySelector("circle:first-child");
+      if (circ) circ.setAttribute("fill", "#38BDF8");
+    }
+  } else {
+    // Rejection / Gate 1 lockout (e.g. Scenario 4 at Vizag with 17.5m draft > 14.5m limit)
+    if (oceanRoute) oceanRoute.style.display = "none";
+    if (fracturedRoute) fracturedRoute.style.display = "inline";
+    if (altDhamra) altDhamra.style.display = "inline";
+    if (altGangavaram) altGangavaram.style.display = "inline";
+    if (statusBadge) {
+      statusBadge.innerText = "CRITICAL // DRAFT SAFETY LOCKOUT";
+      statusBadge.style.background = "rgba(220, 38, 38, 0.25)";
+      statusBadge.style.color = "#EF4444";
+      statusBadge.style.borderColor = "rgba(220, 38, 38, 0.5)";
+    }
+    if (simMarker) {
+      const circ = simMarker.querySelector("circle:first-child");
+      if (circ) circ.setAttribute("fill", "#EF4444");
+    }
+  }
+}
+
 // Load Scenario Preset
 export function loadScenario(scenarioId) {
   const sc = CONFIG.SCENARIOS[scenarioId];
@@ -452,8 +542,10 @@ export function loadScenario(scenarioId) {
     playSuccessChime();
   }
   
+  triggerScenarioSweep();
   executePipeline();
 }
+
 
 
 // Setup Keyboard & Assistant Interactions
@@ -637,6 +729,9 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Initialize Living Ocean Physics Canvas
+  initLivingOcean("oceanCanvas");
+
   // Initialize Authentication & Bootstrap Control Tower on Auth
   initAuth(
     () => {
@@ -655,4 +750,5 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   );
 });
+
 
