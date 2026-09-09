@@ -1,0 +1,11 @@
+trade_lane,origin,destination,vessel_type,baseline_rate_usd,bunker_sensitivity,seasonal_volatility_pct
+Australia-EastCoastIndia,Australia,Paradip,Panamax,14.20,0.18,16.5
+Australia-EastCoastIndia,Australia,Dhamra,Capesize,11.80,0.22,18.0
+Australia-EastCoastIndia,Australia,Visakhapatnam,Panamax,14.50,0.18,15.5
+Indonesia-EastCoastIndia,Indonesia,Visakhapatnam,Supramax,9.80,0.14,12.0
+Indonesia-EastCoastIndia,Indonesia,Paradip,Supramax,9.50,0.14,12.5
+SouthAfrica-EastCoastIndia,South Africa,Dhamra,Capesize,13.20,0.20,17.2
+SouthAfrica-EastCoastIndia,South Africa,Paradip,Panamax,16.50,0.17,16.0
+USA-EastCoastIndia,USA East Coast,Paradip,Panamax,28.50,0.25,22.0
+Mozambique-EastCoastIndia,Mozambique,Visakhapatnam,Panamax,15.20,0.19,14.8
+Canada-EastCoastIndia,Canada West Coast,Paradip,Panamax,24.00,0.23,19.5

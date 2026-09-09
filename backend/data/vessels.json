@@ -1,0 +1,50 @@
+{
+  "Handysize": {
+    "name": "Handysize Bulk Carrier",
+    "dwt_min": 25000,
+    "dwt_max": 39000,
+    "typical_draft": 10.2,
+    "typical_loa": 180,
+    "typical_beam": 28.4,
+    "demurrage_per_day": 14000,
+    "fuel_consumption_sea_mt": 18.5,
+    "speed_knots": 13.0,
+    "suitable_ports": ["Haldia", "Gopalpur", "Visakhapatnam", "Paradip", "Dhamra", "Gangavaram"]
+  },
+  "Supramax": {
+    "name": "Supramax / Ultramax",
+    "dwt_min": 50000,
+    "dwt_max": 65000,
+    "typical_draft": 12.8,
+    "typical_loa": 199,
+    "typical_beam": 32.2,
+    "demurrage_per_day": 17500,
+    "fuel_consumption_sea_mt": 24.0,
+    "speed_knots": 13.5,
+    "suitable_ports": ["Gopalpur", "Visakhapatnam", "Paradip", "Dhamra", "Gangavaram"]
+  },
+  "Panamax": {
+    "name": "Panamax / Kamsarmax",
+    "dwt_min": 70000,
+    "dwt_max": 85000,
+    "typical_draft": 14.5,
+    "typical_loa": 229,
+    "typical_beam": 32.3,
+    "demurrage_per_day": 21000,
+    "fuel_consumption_sea_mt": 31.0,
+    "speed_knots": 14.0,
+    "suitable_ports": ["Paradip", "Dhamra", "Gangavaram", "Visakhapatnam (Outer)"]
+  },
+  "Capesize": {
+    "name": "Capesize / Newcastlemax",
+    "dwt_min": 150000,
+    "dwt_max": 210000,
+    "typical_draft": 18.0,
+    "typical_loa": 292,
+    "typical_beam": 45.0,
+    "demurrage_per_day": 28000,
+    "fuel_consumption_sea_mt": 48.0,
+    "speed_knots": 14.5,
+    "suitable_ports": ["Dhamra", "Gangavaram"]
+  }
+}

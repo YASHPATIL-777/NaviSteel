@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ALT-IDLE-01",
+    "strategy_type": "ACCEPT_COLOAD",
+    "title": "Option A: Accept PSU Co-Load (RINL/SAIL Shared Capesize)",
+    "description": "Combine partial lot with partner PSU at adjacent berth to eliminate post-discharge idle layover.",
+    "route": "Australia ➔ Visakhapatnam / Gangavaram",
+    "cargo": "Premium Coking Coal (65,000 MT)",
+    "expected_idle_days": 0.8,
+    "idle_reduction_days": 4.0,
+    "financial_impact_usd": 108000,
+    "financial_type": "SAVINGS",
+    "deadheading_risk": "LOW (Direct Shared Discharge)",
+    "recommendation_rank": 1,
+    "action_label": "ACCEPT CO-LOAD & MERGE BERTH SLOT"
+  },
+  {
+    "id": "ALT-IDLE-02",
+    "strategy_type": "REPOSITION_DEEPWATER",
+    "title": "Option B: Coastal Repositioning to Dhamra / Gangavaram",
+    "description": "Reposition vessel 85nm to immediate deep-water mechanized berth for fast turnaround parcel.",
+    "route": "Paradip ➔ Dhamra Port",
+    "cargo": "Iron Ore Pellets / Met Coke (Backhaul)",
+    "expected_idle_days": 1.2,
+    "idle_reduction_days": 3.6,
+    "financial_impact_usd": 94000,
+    "financial_type": "SAVINGS",
+    "deadheading_risk": "LOW (Short Coastal Hop 85nm)",
+    "recommendation_rank": 2,
+    "action_label": "REPOSITION TO DHAMRA DEEP BERTH"
+  },
+  {
+    "id": "ALT-IDLE-03",
+    "strategy_type": "TRIANGULAR_BACKHAUL",
+    "title": "Option C: Triangular Coastal Repositioning (Bay of Bengal)",
+    "description": "Engage vessel in coastal thermal coal movement from Paradip to Chennai/Tuticorin before ballasting back to Australia.",
+    "route": "East Coast India ➔ South India Coastal",
+    "cargo": "Domestic Thermal Coal (55,000 MT)",
+    "expected_idle_days": 2.1,
+    "idle_reduction_days": 2.7,
+    "financial_impact_usd": 65000,
+    "financial_type": "REVENUE",
+    "deadheading_risk": "MEDIUM (Added 420nm Coastal Leg)",
+    "recommendation_rank": 3,
+    "action_label": "EXECUTE TRIANGULAR BACKHAUL"
+  },
+  {
+    "id": "ALT-IDLE-04",
+    "strategy_type": "WAIT_AT_ANCHORAGE",
+    "title": "Option D: Standby at Outer Anchorage",
+    "description": "Maintain vessel on standby at outer roads awaiting next scheduled SAIL parcel.",
+    "route": "Current Port Anchorage",
+    "cargo": "None (Unladen Idle)",
+    "expected_idle_days": 4.8,
+    "idle_reduction_days": 0.0,
+    "financial_impact_usd": -126000,
+    "financial_type": "LOSS",
+    "deadheading_risk": "HIGH (Unproductive Idle Burn)",
+    "recommendation_rank": 4,
+    "action_label": "MAINTAIN ANCHORAGE STANDBY"
+  }
+]

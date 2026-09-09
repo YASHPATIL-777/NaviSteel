@@ -1,0 +1,26 @@
+{
+  "spot_volatility_premium_pct": 0.12,
+  "short_term_discount_pct": 0.04,
+  "medium_term_discount_pct": 0.08,
+  "average_voyage_turnaround_days": {
+    "Australia-EastCoastIndia": 32,
+    "Indonesia-EastCoastIndia": 16,
+    "SouthAfrica-EastCoastIndia": 36,
+    "USA-EastCoastIndia": 65
+  },
+  "operational_risk_ratings": {
+    "spot": "HIGH",
+    "short_term": "MEDIUM",
+    "medium_term": "LOW"
+  },
+  "flexibility_scores": {
+    "spot": 95,
+    "short_term": 75,
+    "medium_term": 45
+  },
+  "commitment_scores": {
+    "spot": 10,
+    "short_term": 55,
+    "medium_term": 90
+  }
+}

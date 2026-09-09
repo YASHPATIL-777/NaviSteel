@@ -1,0 +1,57 @@
+{
+  "score_weights": {
+    "freight_volatility": 0.25,
+    "port_congestion": 0.25,
+    "monsoon_swell": 0.20,
+    "demurrage_exposure": 0.15,
+    "logistics_rake": 0.15
+  },
+  "severity_thresholds": {
+    "CRITICAL": 80,
+    "HIGH": 60,
+    "MODERATE": 30,
+    "LOW": 0
+  },
+  "alert_catalog": [
+    {
+      "type": "PORT_CONGESTION",
+      "name": "Post-Monsoon Berth Congestion Warning",
+      "trigger_months": [8, 9, 10],
+      "ports": ["Paradip", "Visakhapatnam", "Haldia"],
+      "expected_delay_days": 4.1,
+      "base_demurrage_exposure": 116000,
+      "probability_pct": 78,
+      "default_action": "LOCK SHORT-TERM CHARTER OR DIVERT 30% VOLUME TO DHAMRA"
+    },
+    {
+      "type": "FREIGHT_VOLATILITY",
+      "name": "Q4 Forward Rate Surge Alert",
+      "trigger_months": [8, 9, 10, 11],
+      "ports": ["Paradip", "Dhamra", "Visakhapatnam"],
+      "expected_delay_days": 0.0,
+      "base_demurrage_exposure": 260000,
+      "probability_pct": 85,
+      "default_action": "CONCLUDE MULTI-VOYAGE COA BEFORE 30-DAY WINDOW EXPIRES"
+    },
+    {
+      "type": "MONSOON_SWELL",
+      "name": "Bay of Bengal Swell & Under-Keel Clearance Advisory",
+      "trigger_months": [6, 7, 8, 9],
+      "ports": ["Visakhapatnam", "Gopalpur", "Paradip"],
+      "expected_delay_days": 2.5,
+      "base_demurrage_exposure": 55000,
+      "probability_pct": 72,
+      "default_action": "ENSURE MINIMUM 1.2M UKC OR SCHEDULE DEEP WATER DISCHARGE"
+    },
+    {
+      "type": "RAIL_LOGISTICS",
+      "name": "ECoR / SER Freight Rake Allocation Deficit",
+      "trigger_months": [6, 7, 8],
+      "ports": ["Paradip", "Haldia"],
+      "expected_delay_days": 3.0,
+      "base_demurrage_exposure": 48000,
+      "probability_pct": 65,
+      "default_action": "ACTIVATE CONTINGENCY RAKE INDENT VIA DEDICATED RAIL CORRIDOR"
+    }
+  ]
+}

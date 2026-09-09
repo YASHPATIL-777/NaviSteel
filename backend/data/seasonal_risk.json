@@ -1,0 +1,17 @@
+{
+  "monthly_factors": {
+    "1": { "name": "January", "monsoon": 0.05, "cyclone": 0.05, "rake_shortage": 0.15, "historical_congestion_days": 1.2, "wave_avg_m": 1.1, "freight_multiplier": 0.95 },
+    "2": { "name": "February", "monsoon": 0.05, "cyclone": 0.05, "rake_shortage": 0.20, "historical_congestion_days": 1.0, "wave_avg_m": 1.2, "freight_multiplier": 0.98 },
+    "3": { "name": "March", "monsoon": 0.10, "cyclone": 0.10, "rake_shortage": 0.25, "historical_congestion_days": 1.5, "wave_avg_m": 1.3, "freight_multiplier": 1.02 },
+    "4": { "name": "April", "monsoon": 0.15, "cyclone": 0.25, "rake_shortage": 0.20, "historical_congestion_days": 1.8, "wave_avg_m": 1.5, "freight_multiplier": 1.05 },
+    "5": { "name": "May", "monsoon": 0.35, "cyclone": 0.65, "rake_shortage": 0.20, "historical_congestion_days": 2.8, "wave_avg_m": 2.2, "freight_multiplier": 1.12 },
+    "6": { "name": "June", "monsoon": 0.85, "cyclone": 0.40, "rake_shortage": 0.35, "historical_congestion_days": 4.5, "wave_avg_m": 2.8, "freight_multiplier": 1.20 },
+    "7": { "name": "July", "monsoon": 0.95, "cyclone": 0.30, "rake_shortage": 0.45, "historical_congestion_days": 5.8, "wave_avg_m": 3.2, "freight_multiplier": 1.28 },
+    "8": { "name": "August", "monsoon": 0.90, "cyclone": 0.35, "rake_shortage": 0.40, "historical_congestion_days": 5.2, "wave_avg_m": 3.0, "freight_multiplier": 1.25 },
+    "9": { "name": "September", "monsoon": 0.70, "cyclone": 0.50, "rake_shortage": 0.30, "historical_congestion_days": 3.8, "wave_avg_m": 2.4, "freight_multiplier": 1.15 },
+    "10": { "name": "October", "monsoon": 0.30, "cyclone": 0.75, "rake_shortage": 0.25, "historical_congestion_days": 3.2, "wave_avg_m": 2.1, "freight_multiplier": 1.08 },
+    "11": { "name": "November", "monsoon": 0.15, "cyclone": 0.60, "rake_shortage": 0.20, "historical_congestion_days": 2.2, "wave_avg_m": 1.6, "freight_multiplier": 1.02 },
+    "12": { "name": "December", "monsoon": 0.05, "cyclone": 0.20, "rake_shortage": 0.15, "historical_congestion_days": 1.4, "wave_avg_m": 1.2, "freight_multiplier": 0.96 }
+  },
+  "cyclone_hotspots": ["Paradip", "Dhamra", "Gopalpur", "Visakhapatnam"]
+}
